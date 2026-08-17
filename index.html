@@ -1897,7 +1897,7 @@ function clickCharacter(event){
   // Без мьюинга клик считается по обычной формуле. Во время мьюинга добавляем
   // ещё +50% от базового клика, округляя бонус вверх минимум до 1 монеты.
   const baseMultiplier=getStatsMultiplier()*(game.boostActive?2:1)*getComboMultiplier();
-  const baseAmount=game.clickPower*baseMultiplier;
+  const baseAmount=game.clickPower*1.60*baseMultiplier;
   const mewBonus=game.mewActive?Math.max(1,Math.ceil(baseAmount*0.5)):0;
   let amount=baseAmount+mewBonus;
   const crit=Math.random()<getCritChance();
