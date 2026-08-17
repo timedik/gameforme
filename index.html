@@ -1205,6 +1205,29 @@ body{
 .playtime-top-label{font-size:9px;font-weight:900;letter-spacing:1px;color:var(--ink-soft)}
 #playTimePreview{font-size:12px;font-weight:900;white-space:nowrap}
 .settings-gear{width:48px;padding-left:0!important;padding-right:0!important;font-size:20px!important}
+ .game-menu-button{width:48px;padding-left:0!important;padding-right:0!important;font-size:19px!important;display:inline-flex;align-items:center;justify-content:center}
+.game-menu-button svg{width:20px;height:20px}
+.game-menu-backdrop{position:fixed;inset:0;z-index:305;background:rgba(7,7,12,.58);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .18s ease}
+.game-menu-backdrop.show{opacity:1;pointer-events:auto}
+.game-menu-panel{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));z-index:310;width:min(360px,calc(100vw - 24px));padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(28,28,40,.96);box-shadow:0 22px 60px rgba(0,0,0,.5);transform:translateY(-12px) scale(.98);opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s cubic-bezier(.2,.9,.2,1)}
+.game-menu-panel.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.game-menu-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 10px}
+.game-menu-title{font-size:16px;font-weight:800;color:var(--ink)}
+.game-menu-sub{font-size:9px;color:var(--ink-soft);font-weight:700;margin-top:2px}
+.game-menu-close{width:38px;height:38px;padding:0;border:1px solid var(--line-strong);border-radius:11px;background:var(--card-soft);color:var(--ink);font-size:20px;cursor:pointer;display:grid;place-items:center}
+.game-menu-actions{display:grid;gap:8px}
+.game-menu-action{width:100%;min-height:48px;display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--card-soft);color:var(--ink);font-size:12px;font-weight:800;cursor:pointer;text-align:left}
+.game-menu-action:hover{filter:brightness(1.08)}
+.game-menu-action:active{transform:translateY(1px)}
+.game-menu-action svg{width:18px;height:18px;flex:0 0 18px}
+.game-menu-action.primary{background:linear-gradient(135deg,var(--green),#66e6ad);border-color:var(--green-dark);color:#0b3420}
+.game-menu-action.warn{border-color:var(--pink-dark);color:#ffb4cb;background:#24151d}
+.game-menu-divider{height:1px;background:rgba(255,255,255,.06);margin:4px 0}
+@media(max-width:760px){
+  .game-menu-button{width:42px;height:42px}
+  .game-menu-panel{top:auto;right:8px;left:8px;bottom:calc(78px + env(safe-area-inset-bottom));width:auto;transform:translateY(12px) scale(.98)}
+  .game-menu-panel.show{transform:translateY(0) scale(1)}
+}
 .footer-row{display:none !important}
 .meta-row{display:none !important}
 @media (max-width:900px){
@@ -1411,6 +1434,7 @@ body{
       <button class="mini-action sound-button" id="soundButton" type="button" aria-label="Звук" title="Звук"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6l4.9 4V5.5l-4.9 4H4z" fill="currentColor" stroke="none"/><path d="M16 8.5a5 5 0 010 7"/><path d="M18.5 6a8.5 8.5 0 010 12"/></svg></button>
       <button class="mini-action settings-gear" id="gameSettingsButton" type="button" aria-label="Настройки" title="Настройки"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
       <button class="mini-action shop-icon-button" id="shopButton" type="button" aria-label="Магазин" title="Магазин"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg></button>
+      <button class="mini-action game-menu-button" id="gameMenuButton" type="button" aria-label="Меню" title="Меню" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
     </div>
   </header>
 
@@ -1418,8 +1442,23 @@ body{
     <button class="mobile-tab" id="mtSoundButton" type="button"><span class="mobile-tab-icon" id="mtSoundIcon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6l4.9 4V5.5l-4.9 4H4z" fill="currentColor" stroke="none"/><path d="M16 8.5a5 5 0 010 7"/><path d="M18.5 6a8.5 8.5 0 010 12"/></svg></span><span class="mobile-tab-label">Звук</span></button>
     <button class="mobile-tab" id="mtSettingsButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span class="mobile-tab-label">Настройки</span></button>
     <button class="mobile-tab" id="mtShopButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg></span><span class="mobile-tab-label">Магазин</span></button>
+    <button class="mobile-tab" id="mtMenuButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg></span><span class="mobile-tab-label">Меню</span></button>
   </nav>
 
+  <div class="game-menu-backdrop" id="gameMenuBackdrop" aria-hidden="true"></div>
+  <aside class="game-menu-panel" id="gameMenuPanel" aria-hidden="true">
+    <div class="game-menu-head">
+      <div><div class="game-menu-title">МЕНЮ ИГРЫ</div><div class="game-menu-sub">Быстрый доступ без выхода из прогресса</div></div>
+      <button class="game-menu-close" id="gameMenuClose" type="button" aria-label="Закрыть меню">×</button>
+    </div>
+    <div class="game-menu-actions">
+      <button class="game-menu-action primary" id="gameMenuContinue" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5z"/></svg><span>ПРОДОЛЖИТЬ ИГРУ</span></button>
+      <button class="game-menu-action" id="gameMenuShop" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg><span>МАГАЗИН</span></button>
+      <button class="game-menu-action" id="gameMenuSettings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33 1.65 1.65 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 01-1.51 1z"/></svg><span>НАСТРОЙКИ</span></button>
+      <div class="game-menu-divider"></div>
+      <button class="game-menu-action warn" id="gameMenuBackMain" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l-6 6 6 6"/><path d="M4 12h11a5 5 0 015 5v1"/></svg><span>ГЛАВНОЕ МЕНЮ</span></button>
+    </div>
+  </aside>
 
   <section class="rank-row">
     <div class="rank-info"><div class="rank-label">ТВОЙ УРОВЕНЬ</div><div class="rank-name" id="rankName">SUB 3</div><div class="rank-desc" id="rankDescription">Начало пути</div></div>
@@ -1523,12 +1562,12 @@ body{
 
 const RANKS=[
  {name:'SUB 3',required:150,description:'Начало пути',slug:'sub3'},
- {name:'SUB 5',required:1200,description:'Уже появляются изменения',slug:'sub5'},
- {name:'LTN',required:12000,description:'Первые серьёзные результаты',slug:'ltn'},
- {name:'MTN',required:100000,description:'Прокачка набирает обороты',slug:'mtn'},
- {name:'HTN',required:1000000,description:'Становится тяжело',slug:'htn'},
- {name:'CHAD',required:7500000,description:'CHAD MODE',slug:'chad'},
- {name:'TRUE ADAM',required:30000000,description:'Абсолютный максимум',slug:'true-adam'}
+ {name:'SUB 5',required:550,description:'Уже появляются изменения',slug:'sub5'},
+ {name:'LTN',required:1800,description:'Первые серьёзные результаты',slug:'ltn'},
+ {name:'MTN',required:7000,description:'Прокачка набирает обороты',slug:'mtn'},
+ {name:'HTN',required:25000,description:'Становится тяжело',slug:'htn'},
+ {name:'CHAD',required:105000,description:'CHAD MODE',slug:'chad'},
+ {name:'TRUE ADAM',required:450000,description:'Абсолютный максимум',slug:'true-adam'}
 ];
 // Каждый персонаж хранит свои картинки в собственной папке: images/<персонаж>/<slug>.png
 // Например для ТУН ТУН САХУР на ранге SUB 3: images/tun/sub3.png
@@ -1553,10 +1592,10 @@ const ACHIEVEMENTS=[
  {id:'stat100',title:'Максимальная черта',desc:'Прокачай любую характеристику до 100.',reward:5000,check:g=>STAT_DEFS.some(d=>clampStat(g.characterStats[d.key])>=100)},
  {id:'trueAdam',title:'TRUE ADAM',desc:'Достигни максимального ранга.',reward:50000,check:g=>g.currentRank>=RANKS.length-1}
 ];
-const STAT_MAX_LEVEL=100,STAT_PRICE_GROWTH=1.14,BOOST_DURATION=20;
+const STAT_MAX_LEVEL=100,STAT_PRICE_GROWTH=1.42,BOOST_DURATION=20;
 const MEW_DURATION=10,MEW_COOLDOWN=22,MEW_JAW_INTERVAL=5,MEW_JAW_MAX=3;
 const CRIT_BASE_CHANCE=0.025,CRIT_MAX_CHANCE=0.075,CRIT_MULTIPLIER=4;
-const BOOST_BASE_COST=500,BOOST_RANK_GROWTH=1.35,BOOST_LOOKS_INFLUENCE=0.25;
+const BOOST_BASE_COST=500,BOOST_RANK_GROWTH=1.30,BOOST_LOOKS_INFLUENCE=0.25;
 const SAVE_KEY='looksmax_clicker_save_v5_balanced',OLD_SAVE_KEY='looksmax_clicker_save_v4';
 const LOOKS_STAGES=['low','mid','high','max'];
 const COIN_ICON='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFCB3D" stroke="#F0A500" stroke-width="2"/><circle cx="12" cy="12" r="5.5" fill="#FFE28A"/></svg>';
@@ -1592,8 +1631,16 @@ function clampStat(value){return Math.max(1,Math.min(STAT_MAX_LEVEL,safeInteger(
 function clampNonNegative(value){return Math.max(0,safeNumber(value,0))}
 function formatNumber(value){const n=Math.max(0,safeNumber(value));if(n>=1e12)return(n/1e12).toFixed(1).replace('.0','')+'T';if(n>=1e9)return(n/1e9).toFixed(1).replace('.0','')+'B';if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+'M';if(n>=1e3)return(n/1e3).toFixed(1).replace('.0','')+'K';return String(Math.floor(n))}
 function formatTime(seconds){const s=Math.max(0,safeInteger(seconds));if(s<60)return s+' сек';const m=Math.floor(s/60);if(m<60)return m+' мин';const h=Math.floor(m/60);return h+'ч '+(m%60)+'м'}
-function getRankIndexForClicks(totalClicks){let index=0;for(let i=0;i<RANKS.length;i++){if(totalClicks>=RANKS[i].required)index=i;else break}return index}
-function getRankProgressValue(){return Math.max(0,safeNumber(game.rankXP,game.totalClicks))}
+// Ранг по-прежнему связан с силой клика, но сильно слабее, чем в исходной версии.
+// Базовый клик = +1 прогресс. После покупки +1 СИЛА первый апгрейд уже заметен:
+// x1 -> +1, x2 -> +2, x3-4 -> +2, x5-9 -> +3, x10-16 -> +4 ... максимум +50.
+// Так игроку всё ещё приходится много кликать, но прокачка клика реально ощущается.
+function getRankXPPerClick(){
+  const power=Math.max(1,safeNumber(game.clickPower,1));
+  return Math.min(50,1+Math.floor(1.82*Math.sqrt(Math.max(0,power-1))));
+}
+function getRankIndexForClicks(progress){let index=0;for(let i=0;i<RANKS.length;i++){if(progress>=RANKS[i].required)index=i;else break}return index}
+function getRankProgressValue(){return Math.max(0,safeNumber(game.rankXP,0))}
 function getLooksScore(){let sum=0;for(const def of STAT_DEFS)sum+=clampStat(game.characterStats[def.key]);return sum/STAT_DEFS.length}
 function getStatsMultiplier(){return 1+getLooksScore()/75}
 function getComboMultiplier(){const now=Date.now();if(now-comboLastClick>1300)return 1;return 1+Math.min(15,Math.max(0,game.comboCount-1))*0.04}
@@ -1608,18 +1655,18 @@ function getNextLooksStage(score){if(score<26)return'РАЗВИВАЕТСЯ · 2
 function getStatPrice(def,level){return Math.max(1,Math.ceil(def.basePrice*Math.pow(STAT_PRICE_GROWTH,level-1)))}
 
 const CLICK_UPGRADE_TIERS=[
- {amount:1,baseCost:250,maxBought:15,label:'+1 СИЛА',desc:'Каждый ручной клик приносит +1',icon:'⚡',unlockRank:0},
- {amount:10,baseCost:8000,maxBought:12,label:'+10 СИЛЫ',desc:'Сильный скачок силы клика',icon:'⚡',unlockRank:1},
- {amount:50,baseCost:50000,maxBought:10,label:'+50 СИЛЫ',desc:'Большой пакет для середины игры',icon:'⚡',unlockRank:2},
- {amount:250,baseCost:400000,maxBought:8,label:'+250 СИЛЫ',desc:'Поздняя прокачка',icon:'⚡',unlockRank:3},
- {amount:1000,baseCost:4000000,maxBought:6,label:'+1K СИЛЫ',desc:'Редкий эндгейм-апгрейд',icon:'⚡',unlockRank:4}
+ {amount:1,baseCost:225,maxBought:15,label:'+1 СИЛА',desc:'Каждый ручной клик приносит +1',icon:'⚡',unlockRank:0},
+ {amount:10,baseCost:7200,maxBought:12,label:'+10 СИЛЫ',desc:'Сильный скачок силы клика',icon:'⚡',unlockRank:1},
+ {amount:50,baseCost:45000,maxBought:10,label:'+50 СИЛЫ',desc:'Большой пакет для середины игры',icon:'⚡',unlockRank:2},
+ {amount:250,baseCost:360000,maxBought:8,label:'+250 СИЛЫ',desc:'Поздняя прокачка',icon:'⚡',unlockRank:3},
+ {amount:1000,baseCost:3600000,maxBought:6,label:'+1K СИЛЫ',desc:'Редкий эндгейм-апгрейд',icon:'⚡',unlockRank:4}
 ];
 const AUTO_UPGRADE_TIERS=[
- {amount:1,baseCost:150,maxBought:15,label:'+1 / СЕК',desc:'Автоматически даёт +1 в секунду',icon:'◉',unlockRank:0},
- {amount:10,baseCost:9000,maxBought:12,label:'+10 / СЕК',desc:'Стабильный автоматический доход',icon:'◉',unlockRank:1},
- {amount:50,baseCost:60000,maxBought:10,label:'+50 / СЕК',desc:'Большой автоматический доход',icon:'◉',unlockRank:2},
- {amount:250,baseCost:450000,maxBought:8,label:'+250 / СЕК',desc:'Поздний пассивный доход',icon:'◉',unlockRank:3},
- {amount:1000,baseCost:5000000,maxBought:6,label:'+1K / СЕК',desc:'Редкий эндгейм-автокликер',icon:'◉',unlockRank:4}
+ {amount:1,baseCost:135,maxBought:15,label:'+1 / СЕК',desc:'Автоматически даёт +1 в секунду',icon:'◉',unlockRank:0},
+ {amount:10,baseCost:8100,maxBought:12,label:'+10 / СЕК',desc:'Стабильный автоматический доход',icon:'◉',unlockRank:1},
+ {amount:50,baseCost:54000,maxBought:10,label:'+50 / СЕК',desc:'Большой автоматический доход',icon:'◉',unlockRank:2},
+ {amount:250,baseCost:405000,maxBought:8,label:'+250 / СЕК',desc:'Поздний пассивный доход',icon:'◉',unlockRank:3},
+ {amount:1000,baseCost:4500000,maxBought:6,label:'+1K / СЕК',desc:'Редкий эндгейм-автокликер',icon:'◉',unlockRank:4}
 ];
 function getUpgradeUnlockRank(type,index){
  const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS;
@@ -1634,7 +1681,7 @@ function ensureUpgradePackages(){
 }
 function packageCost(type,index){
  ensureUpgradePackages();const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS;const def=defs[index];
- const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));return Math.ceil(def.baseCost*Math.pow(1.52,bought));
+ const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));return Math.ceil(def.baseCost*Math.pow(1.45,bought));
 }
 function isUpgradeMaxed(type,index){ensureUpgradePackages();const def=(type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS)[index];return !!def&&safeInteger(game.upgradePackages[type][index],0)>=(def.maxBought||Infinity)}
 function buildUpgradeShop(){
@@ -1689,7 +1736,7 @@ function loadGame(){
    if(!raw)return;
    const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return;
    game={...cloneDefaultGame(),...saved,achievements:{...(saved.achievements||{})},characterStats:{...cloneDefaultGame().characterStats,...(saved.characterStats||{})}};
-   const hasNewProgression=Object.prototype.hasOwnProperty.call(saved,'rankXP');game.totalClicks=hasNewProgression?clampNonNegative(game.totalClicks):0;game.rankXP=hasNewProgression?clampNonNegative(game.rankXP):0;game.coins=clampNonNegative(game.coins);game.totalEarned=clampNonNegative(game.totalEarned);
+   const hasNewProgression=Object.prototype.hasOwnProperty.call(saved,'rankXP');game.totalClicks=clampNonNegative(game.totalClicks);game.rankXP=hasNewProgression?clampNonNegative(game.rankXP):game.totalClicks;game.coins=clampNonNegative(game.coins);game.totalEarned=clampNonNegative(game.totalEarned);
    game.currentRank=Math.max(0,Math.min(RANKS.length-1,safeInteger(game.currentRank,0)));game.clickPower=Math.max(1,safeInteger(game.clickPower,1));game.autoClickers=Math.max(0,safeInteger(game.autoClickers,0));
    game.boostActive=Boolean(game.boostActive);game.boostTime=Math.max(0,safeInteger(game.boostTime,0));game.autoClickPrice=Math.max(1,safeNumber(game.autoClickPrice,100));game.clickPowerPrice=Math.max(1,safeNumber(game.clickPowerPrice,250));
    game.comboCount=Math.max(0,safeInteger(game.comboCount,0));game.bestCombo=Math.max(1,safeNumber(game.bestCombo,1));game.playSeconds=Math.max(0,safeInteger(game.playSeconds,0));game.upgradesBought=Math.max(0,safeInteger(game.upgradesBought,0));
@@ -1706,7 +1753,7 @@ function syncRank(showPopup=true){const target=getRankIndexForClicks(getRankProg
 function updateCharacterImage(){const rank=RANKS[game.currentRank]||RANKS[0];const src=getRankImagePath(rank);el.characterImage.alt=rank.name;el.characterEmoji.innerHTML=MASCOT_ICON;el.characterPlaceholderTitle.textContent=rank.name;el.characterPlaceholderText.textContent=rank.description;if(lastImageSrc===src)return;lastImageSrc=src;el.characterImage.style.display='none';el.characterPlaceholder.style.display='flex';el.characterImage.onload=()=>{el.characterImage.style.display='block';el.characterPlaceholder.style.display='none'};el.characterImage.onerror=()=>{el.characterImage.style.display='none';el.characterPlaceholder.style.display='flex'};el.characterImage.src=src}
 function applyLooksVisualStage(score){const stage=getLooksStage(score);if(stage!==lastFrameStage){for(const item of LOOKS_STAGES)el.characterFrame.classList.remove('stage-'+item);el.characterFrame.classList.add('stage-'+stage);lastFrameStage=stage}el.looksStageBadge.textContent=stage==='low'?'НЕ ПРОКАЧАН':stage==='mid'?'РАЗВИВАЕТСЯ':stage==='high'?'ЭЛИТА':'МАКСИМУМ'}
 function checkAchievements(){for(const achievement of ACHIEVEMENTS){if(game.achievements[achievement.id])continue;if(achievement.check(game)){game.achievements[achievement.id]=true;game.coins+=achievement.reward;game.totalEarned+=achievement.reward;showToast(achievement.title+' • +'+formatNumber(achievement.reward)+' монет')}}}
-function updateMewUI(){const label=el.mewButton?.querySelector('span'),sub=el.mewButton?.querySelector('small');if(game.mewActive){el.mewButton.disabled=true;if(label)label.textContent='МЬЮИНГ ВКЛ';if(sub)sub.textContent='+50% ДОХОДА';el.mewButton.classList.add('active');el.mewCooldown.textContent=game.mewTime+'с';el.mewStatus.hidden=false;el.mewStatus.textContent='МЬЮИНГ '+game.mewTime+'с';el.characterFrame.classList.add('mew-active')}else{el.mewButton.disabled=game.mewCooldown>0;if(label)label.textContent=game.mewCooldown>0?'ОСТЫВАЕТ':'МЬЮИНГ';if(sub)sub.textContent=game.mewCooldown>0?game.mewCooldown+'С':' +50% ДОХОДА';el.mewButton.classList.remove('active');el.mewCooldown.textContent=game.mewCooldown>0?game.mewCooldown+'с':'ГОТОВ';el.mewStatus.hidden=true;el.characterFrame.classList.remove('mew-active')}}
+function updateMewUI(){const label=el.mewButton?.querySelector('span'),sub=el.mewButton?.querySelector('small');if(game.mewActive){el.mewButton.disabled=true;if(label)label.textContent='МЬЮИНГ ВКЛ';if(sub)sub.textContent='+50% К КЛИКУ';el.mewButton.classList.add('active');el.mewCooldown.textContent=game.mewTime+'с';el.mewStatus.hidden=false;el.mewStatus.textContent='МЬЮИНГ '+game.mewTime+'с';el.characterFrame.classList.add('mew-active')}else{el.mewButton.disabled=game.mewCooldown>0;if(label)label.textContent=game.mewCooldown>0?'ОСТЫВАЕТ':'МЬЮИНГ';if(sub)sub.textContent=game.mewCooldown>0?game.mewCooldown+'С':' +50% К КЛИКУ';el.mewButton.classList.remove('active');el.mewCooldown.textContent=game.mewCooldown>0?game.mewCooldown+'с':'ГОТОВ';el.mewStatus.hidden=true;el.characterFrame.classList.remove('mew-active')}}
 function updateUI(){
  checkAchievements();
  const rank=RANKS[game.currentRank]||RANKS[0],score=Math.round(getLooksScore()),income=getPassiveIncome();
@@ -1727,7 +1774,7 @@ function updateUI(){
   el.boostStatus.hidden=true;
   el.characterFrame.classList.remove('boost-active');
 }
- if(game.currentRank>=RANKS.length-1){el.progressText.textContent='МАКС';el.progressFill.style.width='100%'}else{const prev=game.currentRank===0?0:RANKS[game.currentRank].required,next=RANKS[game.currentRank+1].required,current=Math.max(0,game.totalClicks-prev),needed=Math.max(1,next-prev);el.progressText.textContent=formatNumber(current)+' / '+formatNumber(needed);el.progressFill.style.width=Math.max(0,Math.min(100,current/needed*100))+'%'}
+ if(game.currentRank>=RANKS.length-1){el.progressText.textContent='МАКС';el.progressFill.style.width='100%'}else{const prev=game.currentRank===0?0:RANKS[game.currentRank].required,next=RANKS[game.currentRank+1].required,progress=getRankProgressValue(),current=Math.max(0,progress-prev),needed=Math.max(1,next-prev);el.progressText.textContent=formatNumber(current)+' / '+formatNumber(needed);el.progressFill.style.width=Math.max(0,Math.min(100,current/needed*100))+'%'}
  applyLooksVisualStage(score);updateMewUI();updateCharacterImage();renderStatCards();checkAchievements();
 }
 let activeStatCategory='face';
@@ -1846,7 +1893,13 @@ function clickCharacter(event){
   ensureAudio();
   createClickRipple(event);
   updateCombo();
-  let amount=game.clickPower*getCurrentMultiplier();
+  // Мьюинг: отдельный гарантированный бонус, чтобы он был заметен даже на x1.
+  // Без мьюинга клик считается по обычной формуле. Во время мьюинга добавляем
+  // ещё +50% от базового клика, округляя бонус вверх минимум до 1 монеты.
+  const baseMultiplier=getStatsMultiplier()*(game.boostActive?2:1)*getComboMultiplier();
+  const baseAmount=game.clickPower*baseMultiplier;
+  const mewBonus=game.mewActive?Math.max(1,Math.ceil(baseAmount*0.5)):0;
+  let amount=baseAmount+mewBonus;
   const crit=Math.random()<getCritChance();
   maybeCharacterReaction(crit);
   if(crit){
@@ -1861,14 +1914,15 @@ function clickCharacter(event){
     if(navigator.vibrate)navigator.vibrate(5);
   }
   game.totalClicks+=1;
-  game.rankXP+=1;
+  // Сила клика ускоряет ранг, но очень слабо. Игрок всё равно должен много тапать.
+  game.rankXP+=getRankXPPerClick();
   game.coins+=amount;
   game.totalEarned+=amount;
   if(game.mewActive&&game.mewClicks<MEW_JAW_MAX*MEW_JAW_INTERVAL){
     game.mewClicks+=1;
     if(game.mewClicks%MEW_JAW_INTERVAL===0){
       game.characterStats.jawline=clampStat(game.characterStats.jawline+1);
-      showToast('Челюсть +1');
+      showToast('МЬЮИНГ: Челюсть +1');
     }
   }
   syncRank(true);
@@ -1885,7 +1939,7 @@ function buyAutoClicker(){buyUpgradePackage('auto',0)}
 function buyClickPower(){buyUpgradePackage('click',0)}
 function buyStat(key){const def=STAT_DEFS.find(d=>d.key===key);if(!def)return;const level=clampStat(game.characterStats[key]);if(level>=STAT_MAX_LEVEL){showToast(def.name+' уже МАКС');return}const price=getStatPrice(def,level);if(game.coins<price){showToast('Не хватает монет');return}game.coins-=price;game.characterStats[key]=level+1;game.upgradesBought+=1;showToast(def.name+' повышена: '+level+' → '+(level+1));updateUI();saveGame()}
 function activateBoost(){if(game.boostActive)return;const price=getBoostPrice();if(game.coins<price){showToast('Не хватает монет для x2');return}game.coins-=price;game.boostActive=true;game.boostTime=BOOST_DURATION;showToast('Буст x2 активирован! Цена: '+formatNumber(price)+' монет');updateUI();saveGame()}
-function activateMew(){if(game.mewActive||game.mewCooldown>0)return;game.mewActive=true;game.mewTime=MEW_DURATION;game.mewCooldown=MEW_COOLDOWN;game.mewClicks=0;playUiSound('mew');showToast('Мьюинг: доход +50% на 12 секунд');updateUI();saveGame()}
+function activateMew(){if(game.mewActive||game.mewCooldown>0)return;game.mewActive=true;game.mewTime=MEW_DURATION;game.mewCooldown=MEW_COOLDOWN;game.mewClicks=0;playUiSound('mew');showToast('МЬЮИНГ: +50% к клику • +1 челюсть каждые 5 кликов');updateUI();saveGame()}
 function showRankUp(newRankIndex){const rank=RANKS[newRankIndex];if(!rank)return;el.rankUpTitle.textContent=rank.name;el.rankUpDescription.textContent=rank.description;el.rankBonus.textContent=newRankIndex===RANKS.length-1?'Все характеристики достигли МАКСИМУМА.':'Все характеристики получили бонус.';el.rankUp.classList.add('show');el.rankUp.setAttribute('aria-hidden','false');if(rankPopupTimer)clearTimeout(rankPopupTimer);rankPopupTimer=setTimeout(closeRankUp,5000)}
 function closeRankUp(){el.rankUp.classList.remove('show');el.rankUp.setAttribute('aria-hidden','true')}
 function showToast(message){el.toast.textContent=message;el.toast.classList.add('show');if(toastTimeout)clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>el.toast.classList.remove('show'),1700)}
@@ -2122,6 +2176,33 @@ document.getElementById('settingsSound').addEventListener('click',()=>{toggleAud
 document.getElementById('settingsReset').addEventListener('click',()=>{if(window.confirm('Сбросить весь прогресс?')){resetGame();showMenuToast('Прогресс сброшен')}});
 document.getElementById('characterBack').addEventListener('click',()=>{if(panelMidGame)closePanelToGame(menuUI.characters);else backToMain()});
 document.getElementById('gameSettingsButton')?.addEventListener('click',()=>openSettings(true));
+const gameMenuPanel=document.getElementById('gameMenuPanel');
+const gameMenuBackdrop=document.getElementById('gameMenuBackdrop');
+const gameMenuButton=document.getElementById('gameMenuButton');
+const mtMenuButton=document.getElementById('mtMenuButton');
+function setGameMenu(open){
+  if(!gameMenuPanel||!gameMenuBackdrop)return;
+  gameMenuPanel.classList.toggle('show',open);
+  gameMenuBackdrop.classList.toggle('show',open);
+  gameMenuPanel.setAttribute('aria-hidden',String(!open));
+  gameMenuBackdrop.setAttribute('aria-hidden',String(!open));
+  gameMenuButton?.setAttribute('aria-expanded',String(open));
+  if(open){notifyGameplayStop();}else{notifyGameplayStart();}
+}
+function openGameSubMenu(which){
+  setGameMenu(false);
+  if(which==='shop'){menuUI.shop.classList.remove('hidden');panelMidGame=true;}
+  if(which==='settings'){openSettings(true);}
+}
+gameMenuButton?.addEventListener('click',()=>setGameMenu(!gameMenuPanel?.classList.contains('show')));
+mtMenuButton?.addEventListener('click',()=>setGameMenu(true));
+document.getElementById('gameMenuClose')?.addEventListener('click',()=>setGameMenu(false));
+gameMenuBackdrop?.addEventListener('click',()=>setGameMenu(false));
+document.getElementById('gameMenuContinue')?.addEventListener('click',()=>setGameMenu(false));
+document.getElementById('gameMenuShop')?.addEventListener('click',()=>openGameSubMenu('shop'));
+document.getElementById('gameMenuSettings')?.addEventListener('click',()=>openGameSubMenu('settings'));
+document.getElementById('gameMenuBackMain')?.addEventListener('click',()=>{setGameMenu(false);backToMain();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&gameMenuPanel?.classList.contains('show'))setGameMenu(false);});
 document.querySelectorAll('.character-option').forEach(card=>card.addEventListener('click',()=>{
   const character=card.dataset.character;
   if(panelMidGame){
@@ -3644,4 +3725,29 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
   });
 })();
 </script>
+
+<style id="game-menu-responsive-final">
+@media(max-width:900px){
+  .topbar{grid-template-columns:auto 1fr auto;align-items:center;gap:8px}
+  .brand-text{display:none}
+  .brand{display:flex;align-items:center;min-width:42px}
+  .coin-box{justify-self:center;padding:9px 14px;font-size:17px}
+  .top-actions{justify-self:end;gap:5px}
+  .top-actions .playtime-top{display:none}
+  .top-actions .game-menu-button{display:inline-flex}
+}
+@media(max-width:760px){
+  .topbar{position:relative;z-index:315;margin-bottom:8px}
+  .coin-box{padding:8px 12px;font-size:16px}
+  .game{padding-top:calc(8px + env(safe-area-inset-top));}
+  .mobile-tabbar{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .mobile-tab{min-width:0}
+  .mobile-tab-label{font-size:9px}
+}
+@media(max-width:420px){
+  .coin-box{font-size:15px;padding:8px 10px}
+  .brand .logo-mark{width:38px;height:38px}
+  .game-menu-button{width:40px;height:40px}
+}
+</style>
 </body></html>
