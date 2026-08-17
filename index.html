@@ -1284,6 +1284,48 @@ body{
   .upgrade-card .upgrade-buy{grid-column:1/-1 !important;grid-row:2 !important;min-height:44px !important;font-size:13px !important}
 }
 </style>
+
+<style id="premium-upgrade-scrollbar">
+/* ===== PREMIUM UPGRADE SCROLLBAR ===== */
+.upgrade-shop-scroll{
+  scrollbar-width:thin !important;
+  scrollbar-color:rgba(240,192,92,.72) transparent !important;
+  scrollbar-gutter:stable;
+}
+.upgrade-shop-scroll::-webkit-scrollbar{
+  width:5px !important;
+  height:5px !important;
+}
+.upgrade-shop-scroll::-webkit-scrollbar-track{
+  background:transparent !important;
+}
+.upgrade-shop-scroll::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(240,192,92,.88),rgba(201,154,46,.72)) !important;
+  border-radius:999px !important;
+  border:0 !important;
+  box-shadow:0 0 10px rgba(240,192,92,.16);
+}
+.upgrade-shop-scroll::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,rgba(255,214,112,.98),rgba(240,192,92,.88)) !important;
+  box-shadow:0 0 14px rgba(240,192,92,.28);
+}
+.upgrade-shop-scroll::-webkit-scrollbar-button{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
+@media(max-width:620px){
+  .upgrade-shop-scroll{
+    scrollbar-width:none !important;
+    scrollbar-gutter:auto;
+  }
+  .upgrade-shop-scroll::-webkit-scrollbar{
+    width:0 !important;
+    height:0 !important;
+    display:none !important;
+  }
+}
+</style>
 </head><body class="menu-open">
 
 <div id="characterVideoLayer" aria-hidden="true">
@@ -1483,10 +1525,10 @@ const RANKS=[
  {name:'SUB 3',required:150,description:'Начало пути',slug:'sub3'},
  {name:'SUB 5',required:1200,description:'Уже появляются изменения',slug:'sub5'},
  {name:'LTN',required:12000,description:'Первые серьёзные результаты',slug:'ltn'},
- {name:'MTN',required:300000,description:'Прокачка набирает обороты',slug:'mtn'},
- {name:'HTN',required:7500000,description:'Становится тяжело',slug:'htn'},
- {name:'CHAD',required:150000000,description:'CHAD MODE',slug:'chad'},
- {name:'TRUE ADAM',required:750000000,description:'Абсолютный максимум',slug:'true-adam'}
+ {name:'MTN',required:100000,description:'Прокачка набирает обороты',slug:'mtn'},
+ {name:'HTN',required:1000000,description:'Становится тяжело',slug:'htn'},
+ {name:'CHAD',required:7500000,description:'CHAD MODE',slug:'chad'},
+ {name:'TRUE ADAM',required:30000000,description:'Абсолютный максимум',slug:'true-adam'}
 ];
 // Каждый персонаж хранит свои картинки в собственной папке: images/<персонаж>/<slug>.png
 // Например для ТУН ТУН САХУР на ранге SUB 3: images/tun/sub3.png
@@ -1511,11 +1553,11 @@ const ACHIEVEMENTS=[
  {id:'stat100',title:'Максимальная черта',desc:'Прокачай любую характеристику до 100.',reward:5000,check:g=>STAT_DEFS.some(d=>clampStat(g.characterStats[d.key])>=100)},
  {id:'trueAdam',title:'TRUE ADAM',desc:'Достигни максимального ранга.',reward:50000,check:g=>g.currentRank>=RANKS.length-1}
 ];
-const STAT_MAX_LEVEL=100,STAT_PRICE_GROWTH=1.50,BOOST_DURATION=25;
+const STAT_MAX_LEVEL=100,STAT_PRICE_GROWTH=1.14,BOOST_DURATION=20;
 const MEW_DURATION=10,MEW_COOLDOWN=22,MEW_JAW_INTERVAL=5,MEW_JAW_MAX=3;
 const CRIT_BASE_CHANCE=0.025,CRIT_MAX_CHANCE=0.075,CRIT_MULTIPLIER=4;
-const BOOST_BASE_COST=500,BOOST_RANK_GROWTH=1.65,BOOST_LOOKS_INFLUENCE=0.5;
-const SAVE_KEY='looksmax_clicker_save_v4',OLD_SAVE_KEY='looksmax_clicker_save_v3';
+const BOOST_BASE_COST=500,BOOST_RANK_GROWTH=1.35,BOOST_LOOKS_INFLUENCE=0.25;
+const SAVE_KEY='looksmax_clicker_save_v5_balanced',OLD_SAVE_KEY='looksmax_clicker_save_v4';
 const LOOKS_STAGES=['low','mid','high','max'];
 const COIN_ICON='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFCB3D" stroke="#F0A500" stroke-width="2"/><circle cx="12" cy="12" r="5.5" fill="#FFE28A"/></svg>';
 const STAR_ICON='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.2 21 12 17.27 5.8 21 7 14.14 2 9.27l7.1-1.01L12 2z"/></svg>';
@@ -1523,10 +1565,10 @@ const MASCOT_ICON='<svg viewBox="0 0 200 200"><circle cx="100" cy="108" r="78" f
 const DEFAULT_GAME={
  totalClicks:0,coins:0,totalEarned:0,currentRank:0,clickPower:1,autoClickers:0,boostActive:false,boostTime:0,
  autoClickPrice:100,clickPowerPrice:250,comboCount:0,bestCombo:1,playSeconds:0,upgradesBought:0,mewActive:false,mewTime:0,mewCooldown:0,mewClicks:0,
- lastSeenTimestamp:null,lastLoginDate:null,loginStreak:0,
+ lastSeenTimestamp:null,lastLoginDate:null,loginStreak:0,rankXP:0,
  achievements:{},characterStats:{jawline:1,eyes:1,nose:1,skin:1,physique:1,harmony:1,aura:1,muscle:1,posture:1,leanness:1},upgradePackages:{click:{},auto:{}}
 };
-const RANK_STAT_BONUS={1:1,2:2,3:2,4:2,5:3,6:3,7:4,8:5,9:7,10:'max'};
+const RANK_STAT_BONUS={1:1,2:1,3:1,4:1,5:1,6:2};
 // --- базовые константы оффлайн-дохода и ежедневных наград ---
 const OFFLINE_MIN_SECONDS=60,OFFLINE_MAX_SECONDS=8*3600;
 const DAILY_REWARDS=[100,175,275,425,650,950,1400];
@@ -1551,31 +1593,33 @@ function clampNonNegative(value){return Math.max(0,safeNumber(value,0))}
 function formatNumber(value){const n=Math.max(0,safeNumber(value));if(n>=1e12)return(n/1e12).toFixed(1).replace('.0','')+'T';if(n>=1e9)return(n/1e9).toFixed(1).replace('.0','')+'B';if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+'M';if(n>=1e3)return(n/1e3).toFixed(1).replace('.0','')+'K';return String(Math.floor(n))}
 function formatTime(seconds){const s=Math.max(0,safeInteger(seconds));if(s<60)return s+' сек';const m=Math.floor(s/60);if(m<60)return m+' мин';const h=Math.floor(m/60);return h+'ч '+(m%60)+'м'}
 function getRankIndexForClicks(totalClicks){let index=0;for(let i=0;i<RANKS.length;i++){if(totalClicks>=RANKS[i].required)index=i;else break}return index}
+function getRankProgressValue(){return Math.max(0,safeNumber(game.rankXP,game.totalClicks))}
 function getLooksScore(){let sum=0;for(const def of STAT_DEFS)sum+=clampStat(game.characterStats[def.key]);return sum/STAT_DEFS.length}
-function getStatsMultiplier(){return 1+getLooksScore()/100}
+function getStatsMultiplier(){return 1+getLooksScore()/75}
 function getComboMultiplier(){const now=Date.now();if(now-comboLastClick>1300)return 1;return 1+Math.min(15,Math.max(0,game.comboCount-1))*0.04}
 function getCritChance(){const aura=clampStat(game.characterStats.aura);return Math.min(CRIT_MAX_CHANCE,CRIT_BASE_CHANCE+(aura-1)*0.0007)}
-function getBoostPrice(){const rankFactor=Math.pow(BOOST_RANK_GROWTH,game.currentRank);const looksFactor=1+Math.min(BOOST_LOOKS_INFLUENCE,getLooksScore()/200);return Math.max(BOOST_BASE_COST,Math.ceil(BOOST_BASE_COST*rankFactor*looksFactor/50)*50)}
+function getBoostPrice(){const income=Math.max(1,game.autoClickers*game.clickPower*getPassiveMultiplier());const projectedCost=income*BOOST_DURATION*0.45;const rankFactor=Math.pow(BOOST_RANK_GROWTH,game.currentRank);const looksFactor=1+Math.min(BOOST_LOOKS_INFLUENCE,getLooksScore()/200);return Math.max(BOOST_BASE_COST,Math.ceil(Math.max(projectedCost,BOOST_BASE_COST*rankFactor*0.35)*looksFactor/50)*50)}
 function getCurrentMultiplier(){return getStatsMultiplier()*(game.boostActive?2:1)*getComboMultiplier()*(game.mewActive?1.5:1)}
 function getPassiveMultiplier(){return getStatsMultiplier()*(game.boostActive?2:1)*(game.mewActive?1.5:1)}
+function getPassiveIncome(){return game.autoClickers*getPassiveMultiplier()}
 function getLooksStage(score){if(score>=76)return'max';if(score>=51)return'high';if(score>=26)return'mid';return'low'}
 function getLooksRatingName(score){if(score>=92)return'МАКСИМУМ';if(score>=76)return'ЭЛИТА';if(score>=51)return'РЕЗКИЙ';if(score>=26)return'РАЗВИВАЕТСЯ';return'НЕ ПРОКАЧАН'}
 function getNextLooksStage(score){if(score<26)return'РАЗВИВАЕТСЯ · 26';if(score<51)return'РЕЗКИЙ · 51';if(score<76)return'ЭЛИТА · 76';if(score<92)return'МАКСИМУМ · 92';return'МАКСИМУМ'}
 function getStatPrice(def,level){return Math.max(1,Math.ceil(def.basePrice*Math.pow(STAT_PRICE_GROWTH,level-1)))}
 
 const CLICK_UPGRADE_TIERS=[
- {amount:1,baseCost:250,label:'+1 СИЛА',desc:'Каждый ручной клик приносит +1',icon:'⚡',unlockRank:0},
- {amount:25,baseCost:10000,label:'+25 СИЛЫ',desc:'Сильный скачок силы клика',icon:'⚡',unlockRank:1},
- {amount:100,baseCost:50000,label:'+100 СИЛЫ',desc:'Большой пакет для серьёзного фарма',icon:'⚡',unlockRank:2},
- {amount:500,baseCost:300000,label:'+500 СИЛЫ',desc:'Для поздней прокачки',icon:'⚡',unlockRank:3},
- {amount:2500,baseCost:2000000,label:'+2.5K СИЛЫ',desc:'Мощный эндгейм-апгрейд',icon:'⚡',unlockRank:4}
+ {amount:1,baseCost:250,maxBought:15,label:'+1 СИЛА',desc:'Каждый ручной клик приносит +1',icon:'⚡',unlockRank:0},
+ {amount:10,baseCost:8000,maxBought:12,label:'+10 СИЛЫ',desc:'Сильный скачок силы клика',icon:'⚡',unlockRank:1},
+ {amount:50,baseCost:50000,maxBought:10,label:'+50 СИЛЫ',desc:'Большой пакет для середины игры',icon:'⚡',unlockRank:2},
+ {amount:250,baseCost:400000,maxBought:8,label:'+250 СИЛЫ',desc:'Поздняя прокачка',icon:'⚡',unlockRank:3},
+ {amount:1000,baseCost:4000000,maxBought:6,label:'+1K СИЛЫ',desc:'Редкий эндгейм-апгрейд',icon:'⚡',unlockRank:4}
 ];
 const AUTO_UPGRADE_TIERS=[
- {amount:1,baseCost:100,label:'+1 / СЕК',desc:'Автоматически даёт +1 в секунду',icon:'◉',unlockRank:0},
- {amount:25,baseCost:10000,label:'+25 / СЕК',desc:'Сразу +25 монет в секунду',icon:'◉',unlockRank:1},
- {amount:100,baseCost:60000,label:'+100 / СЕК',desc:'Большой автоматический доход',icon:'◉',unlockRank:2},
- {amount:500,baseCost:350000,label:'+500 / СЕК',desc:'Для быстрого накопления',icon:'◉',unlockRank:3},
- {amount:2500,baseCost:2500000,label:'+2.5K / СЕК',desc:'Мощный эндгейм-автокликер',icon:'◉',unlockRank:4}
+ {amount:1,baseCost:150,maxBought:15,label:'+1 / СЕК',desc:'Автоматически даёт +1 в секунду',icon:'◉',unlockRank:0},
+ {amount:10,baseCost:9000,maxBought:12,label:'+10 / СЕК',desc:'Стабильный автоматический доход',icon:'◉',unlockRank:1},
+ {amount:50,baseCost:60000,maxBought:10,label:'+50 / СЕК',desc:'Большой автоматический доход',icon:'◉',unlockRank:2},
+ {amount:250,baseCost:450000,maxBought:8,label:'+250 / СЕК',desc:'Поздний пассивный доход',icon:'◉',unlockRank:3},
+ {amount:1000,baseCost:5000000,maxBought:6,label:'+1K / СЕК',desc:'Редкий эндгейм-автокликер',icon:'◉',unlockRank:4}
 ];
 function getUpgradeUnlockRank(type,index){
  const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS;
@@ -1590,8 +1634,9 @@ function ensureUpgradePackages(){
 }
 function packageCost(type,index){
  ensureUpgradePackages();const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS;const def=defs[index];
- const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));return Math.ceil(def.baseCost*Math.pow(1.38,bought));
+ const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));return Math.ceil(def.baseCost*Math.pow(1.52,bought));
 }
+function isUpgradeMaxed(type,index){ensureUpgradePackages();const def=(type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS)[index];return !!def&&safeInteger(game.upgradePackages[type][index],0)>=(def.maxBought||Infinity)}
 function buildUpgradeShop(){
  const root=document.getElementById('upgradeShopList');if(!root)return;ensureUpgradePackages();
  const items=[];
@@ -1602,8 +1647,8 @@ function buildUpgradeShop(){
  }
  const html=items.map(({type,index,def})=>`<article class="upgrade-card ${isUpgradeUnlocked(type,index)?'is-unlocked':'is-locked'}" data-upgrade-card="${type}-${index}">
    <div class="upgrade-icon-wrap"><div class="upgrade-icon">${isUpgradeUnlocked(type,index)?def.icon:'?'}</div><div class="upgrade-type">${type==='click'?'СИЛА КЛИКА':'АВТОКЛИКЕР'}</div></div>
-   <div class="upgrade-card-copy"><div class="upgrade-tier-name">${def.label}</div><div class="upgrade-tier-desc">${def.desc}</div><div class="upgrade-tier-owned" data-owned="${type}-${index}">Куплено: 0</div></div>
-   <button class="upgrade-buy" data-upgrade-type="${type}" data-upgrade-index="${index}" type="button">${isUpgradeUnlocked(type,index)?formatNumber(def.baseCost)+' монет':'<svg class="btn-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>'+getUnlockRankName(index)}<small>${isUpgradeUnlocked(type,index)?'КУПИТЬ':'ЗАБЛОКИРОВАНО'}</small></button>
+   <div class="upgrade-card-copy"><div class="upgrade-tier-name">${def.label}</div><div class="upgrade-tier-desc">${def.desc}</div><div class="upgrade-tier-owned" data-owned="${type}-${index}">Куплено: 0/${def.maxBought||'∞'}</div></div>
+   <button class="upgrade-buy" data-upgrade-type="${type}" data-upgrade-index="${index}" type="button">${!isUpgradeUnlocked(type,index)?'<svg class="btn-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>'+getUnlockRankName(index):isUpgradeMaxed(type,index)?'МАКС':formatNumber(def.baseCost)+' монет'}<small>${!isUpgradeUnlocked(type,index)?'ЗАБЛОКИРОВАНО':isUpgradeMaxed(type,index)?'ЗАВЕРШЕНО':'КУПИТЬ'}</small></button>
  </article>`);
  root.innerHTML=html.join('');
  root.querySelectorAll('.upgrade-buy').forEach(btn=>btn.addEventListener('click',()=>buyUpgradePackage(btn.dataset.upgradeType,Number(btn.dataset.upgradeIndex))));
@@ -1612,22 +1657,26 @@ function buildUpgradeShop(){
 function updateUpgradeShop(){
  const root=document.getElementById('upgradeShopList');if(!root)return;ensureUpgradePackages();
  root.querySelectorAll('.upgrade-buy').forEach(btn=>{
-  const type=btn.dataset.upgradeType,index=Number(btn.dataset.upgradeIndex),price=packageCost(type,index),unlocked=isUpgradeUnlocked(type,index);
+  const type=btn.dataset.upgradeType,index=Number(btn.dataset.upgradeIndex),price=packageCost(type,index),unlocked=isUpgradeUnlocked(type,index),maxed=isUpgradeMaxed(type,index);
   const card=btn.closest('.upgrade-card');const small=btn.querySelector('small');
   if(card)card.classList.toggle('is-locked',!unlocked),card.classList.toggle('is-unlocked',unlocked);
   const icon=card?.querySelector('.upgrade-icon');const def=(type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS)[index];
   if(icon)icon.textContent=unlocked?(def?.icon||'✦'):'?';
   if(unlocked){
-    btn.disabled=game.coins<price;btn.innerHTML=formatNumber(price)+' монет<small>КУПИТЬ</small>';
+    btn.disabled=maxed||game.coins<price;
+    btn.innerHTML=(maxed?'МАКС':formatNumber(price)+' монет')+'<small>'+(maxed?'ЗАВЕРШЕНО':'КУПИТЬ')+'</small>';
   }else{
     btn.disabled=true;btn.innerHTML='<svg class="btn-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>'+getUnlockRankName(index)+'<small>ЗАБЛОКИРОВАНО</small>';
   }
-  const owned=root.querySelector(`[data-owned="${type}-${index}"]`);if(owned)owned.textContent=unlocked?'Куплено: '+Math.max(0,safeInteger(game.upgradePackages[type][index],0)):'Откроется на '+getUnlockRankName(index);
+  const owned=root.querySelector(`[data-owned="${type}-${index}"]`);if(owned)owned.textContent=unlocked?'Куплено: '+Math.max(0,safeInteger(game.upgradePackages[type][index],0))+'/'+(def?.maxBought||'∞'):'Откроется на '+getUnlockRankName(index);
  });
 }
 function buyUpgradePackage(type,index){
  if(!isUpgradeUnlocked(type,index)){showToast('Открой ранг '+getUnlockRankName(index));return}
- const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS,def=defs[index];if(!def)return;const price=packageCost(type,index);
+ const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS,def=defs[index];if(!def)return;
+ const owned=safeInteger(game.upgradePackages[type]?.[index],0);
+ if(owned>=(def.maxBought||Infinity)){showToast('Этот уровень улучшения уже МАКС');return}
+ const price=packageCost(type,index);
  if(game.coins<price){showToast('Не хватает монет');return}
  game.coins-=price;if(type==='click')game.clickPower+=def.amount;else game.autoClickers+=def.amount;
  ensureUpgradePackages();game.upgradePackages[type][index]=(game.upgradePackages[type][index]||0)+1;game.upgradesBought+=1;
@@ -1637,11 +1686,10 @@ function saveGame(){try{game.lastSeenTimestamp=Date.now();localStorage.setItem(S
 function loadGame(){
  try{
    let raw=localStorage.getItem(SAVE_KEY);
-   if(!raw){raw=localStorage.getItem(OLD_SAVE_KEY)}
    if(!raw)return;
    const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return;
    game={...cloneDefaultGame(),...saved,achievements:{...(saved.achievements||{})},characterStats:{...cloneDefaultGame().characterStats,...(saved.characterStats||{})}};
-   game.totalClicks=clampNonNegative(game.totalClicks);game.coins=clampNonNegative(game.coins);game.totalEarned=clampNonNegative(game.totalEarned);
+   const hasNewProgression=Object.prototype.hasOwnProperty.call(saved,'rankXP');game.totalClicks=hasNewProgression?clampNonNegative(game.totalClicks):0;game.rankXP=hasNewProgression?clampNonNegative(game.rankXP):0;game.coins=clampNonNegative(game.coins);game.totalEarned=clampNonNegative(game.totalEarned);
    game.currentRank=Math.max(0,Math.min(RANKS.length-1,safeInteger(game.currentRank,0)));game.clickPower=Math.max(1,safeInteger(game.clickPower,1));game.autoClickers=Math.max(0,safeInteger(game.autoClickers,0));
    game.boostActive=Boolean(game.boostActive);game.boostTime=Math.max(0,safeInteger(game.boostTime,0));game.autoClickPrice=Math.max(1,safeNumber(game.autoClickPrice,100));game.clickPowerPrice=Math.max(1,safeNumber(game.clickPowerPrice,250));
    game.comboCount=Math.max(0,safeInteger(game.comboCount,0));game.bestCombo=Math.max(1,safeNumber(game.bestCombo,1));game.playSeconds=Math.max(0,safeInteger(game.playSeconds,0));game.upgradesBought=Math.max(0,safeInteger(game.upgradesBought,0));
@@ -1654,15 +1702,15 @@ function loadGame(){
  }catch(error){console.warn('Load failed:',error);game=cloneDefaultGame()}
 }
 function applyRankStatBonuses(fromRankIndex,toRankIndex){for(let i=fromRankIndex+1;i<=toRankIndex;i++){const bonus=RANK_STAT_BONUS[i];if(bonus===undefined)continue;for(const def of STAT_DEFS)game.characterStats[def.key]=bonus==='max'?STAT_MAX_LEVEL:clampStat(clampStat(game.characterStats[def.key])+bonus)}}
-function syncRank(showPopup=true){const target=getRankIndexForClicks(game.totalClicks);const old=Math.max(0,Math.min(RANKS.length-1,game.currentRank));if(target>old){applyRankStatBonuses(old,target);game.currentRank=target;if(showPopup){showRankUp(target);createRankSparkles();playRankSound();if(navigator.vibrate)navigator.vibrate([18,30,18])}}else{game.currentRank=target}}
+function syncRank(showPopup=true){const target=getRankIndexForClicks(getRankProgressValue());const old=Math.max(0,Math.min(RANKS.length-1,game.currentRank));if(target>old){applyRankStatBonuses(old,target);game.currentRank=target;if(showPopup){showRankUp(target);createRankSparkles();playRankSound();if(navigator.vibrate)navigator.vibrate([18,30,18])}}else{game.currentRank=target}}
 function updateCharacterImage(){const rank=RANKS[game.currentRank]||RANKS[0];const src=getRankImagePath(rank);el.characterImage.alt=rank.name;el.characterEmoji.innerHTML=MASCOT_ICON;el.characterPlaceholderTitle.textContent=rank.name;el.characterPlaceholderText.textContent=rank.description;if(lastImageSrc===src)return;lastImageSrc=src;el.characterImage.style.display='none';el.characterPlaceholder.style.display='flex';el.characterImage.onload=()=>{el.characterImage.style.display='block';el.characterPlaceholder.style.display='none'};el.characterImage.onerror=()=>{el.characterImage.style.display='none';el.characterPlaceholder.style.display='flex'};el.characterImage.src=src}
 function applyLooksVisualStage(score){const stage=getLooksStage(score);if(stage!==lastFrameStage){for(const item of LOOKS_STAGES)el.characterFrame.classList.remove('stage-'+item);el.characterFrame.classList.add('stage-'+stage);lastFrameStage=stage}el.looksStageBadge.textContent=stage==='low'?'НЕ ПРОКАЧАН':stage==='mid'?'РАЗВИВАЕТСЯ':stage==='high'?'ЭЛИТА':'МАКСИМУМ'}
 function checkAchievements(){for(const achievement of ACHIEVEMENTS){if(game.achievements[achievement.id])continue;if(achievement.check(game)){game.achievements[achievement.id]=true;game.coins+=achievement.reward;game.totalEarned+=achievement.reward;showToast(achievement.title+' • +'+formatNumber(achievement.reward)+' монет')}}}
 function updateMewUI(){const label=el.mewButton?.querySelector('span'),sub=el.mewButton?.querySelector('small');if(game.mewActive){el.mewButton.disabled=true;if(label)label.textContent='МЬЮИНГ ВКЛ';if(sub)sub.textContent='+50% ДОХОДА';el.mewButton.classList.add('active');el.mewCooldown.textContent=game.mewTime+'с';el.mewStatus.hidden=false;el.mewStatus.textContent='МЬЮИНГ '+game.mewTime+'с';el.characterFrame.classList.add('mew-active')}else{el.mewButton.disabled=game.mewCooldown>0;if(label)label.textContent=game.mewCooldown>0?'ОСТЫВАЕТ':'МЬЮИНГ';if(sub)sub.textContent=game.mewCooldown>0?game.mewCooldown+'С':' +50% ДОХОДА';el.mewButton.classList.remove('active');el.mewCooldown.textContent=game.mewCooldown>0?game.mewCooldown+'с':'ГОТОВ';el.mewStatus.hidden=true;el.characterFrame.classList.remove('mew-active')}}
 function updateUI(){
  checkAchievements();
- const rank=RANKS[game.currentRank]||RANKS[0],score=Math.round(getLooksScore()),income=game.autoClickers*game.clickPower*getPassiveMultiplier();
- el.coins.textContent=formatNumber(game.coins);el.incomePerSecond.textContent=formatNumber(income);el.clickPower.textContent='x'+formatNumber(game.clickPower);el.clickPowerSummary.textContent='x'+formatNumber(game.clickPower);el.clickPowerSmall.textContent=formatNumber(game.clickPower);el.looksHeader.textContent=String(score);el.rankPill.textContent=rank.name;el.rankName.textContent=rank.name;el.rankDescription.textContent=rank.description;el.totalClicks.textContent=formatNumber(game.totalClicks);el.cps.textContent=formatNumber(income);el.looksScoreValue.textContent=String(score);el.looksRatingValue.textContent=getLooksRatingName(score);el.autoLevel.textContent='УР. '+game.autoClickers;el.autoIncomePreview.textContent=formatNumber(Math.max(1,game.clickPower*getPassiveMultiplier()));const autoLevelModal=document.getElementById('autoLevelModal');const autoIncomePreviewModal=document.getElementById('autoIncomePreviewModal');const clickPowerSmallModal=document.getElementById('clickPowerSmallModal');if(autoLevelModal)autoLevelModal.textContent='УР. '+game.autoClickers;if(autoIncomePreviewModal)autoIncomePreviewModal.textContent=formatNumber(Math.max(1,game.clickPower*getPassiveMultiplier()));if(clickPowerSmallModal)clickPowerSmallModal.textContent=formatNumber(game.clickPower);el.autoClickPrice.textContent=formatNumber(game.autoClickPrice);el.clickPowerPrice.textContent=formatNumber(game.clickPowerPrice);el.autoClickButton.title='Автокликер • ур. '+game.autoClickers;el.clickPowerButton.title='Сила клика • x'+game.clickPower;el.autoClickButton.disabled=game.coins<game.autoClickPrice;el.clickPowerButton.disabled=game.coins<game.clickPowerPrice;const boostPrice=getBoostPrice();const boostPriceModal=document.getElementById('boostPriceModal');if(boostPriceModal)boostPriceModal.textContent=formatNumber(boostPrice);const boostPriceMain=document.getElementById('boostPriceMain');if(boostPriceMain)boostPriceMain.textContent=formatNumber(boostPrice);document.getElementById('boostInlineStatus')?.toggleAttribute('hidden',!game.boostActive);const boostInlineTimer=document.getElementById('boostInlineTimer');if(boostInlineTimer)boostInlineTimer.textContent=Math.ceil(game.boostTime);el.metaLooksValue.textContent=String(score);el.bestComboPreview.textContent='x'+formatNumber(game.bestCombo);el.playTimePreview.textContent=formatTime(game.playSeconds);updateUpgradeShop();
+ const rank=RANKS[game.currentRank]||RANKS[0],score=Math.round(getLooksScore()),income=getPassiveIncome();
+ el.coins.textContent=formatNumber(game.coins);el.incomePerSecond.textContent=formatNumber(income);el.clickPower.textContent='x'+formatNumber(game.clickPower);el.clickPowerSummary.textContent='x'+formatNumber(game.clickPower);el.clickPowerSmall.textContent=formatNumber(game.clickPower);el.looksHeader.textContent=String(score);el.rankPill.textContent=rank.name;el.rankName.textContent=rank.name;el.rankDescription.textContent=rank.description;el.totalClicks.textContent=formatNumber(game.totalClicks);el.cps.textContent=formatNumber(income);el.looksScoreValue.textContent=String(score);el.looksRatingValue.textContent=getLooksRatingName(score);el.autoLevel.textContent='УР. '+game.autoClickers;el.autoIncomePreview.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));const autoLevelModal=document.getElementById('autoLevelModal');const autoIncomePreviewModal=document.getElementById('autoIncomePreviewModal');const clickPowerSmallModal=document.getElementById('clickPowerSmallModal');if(autoLevelModal)autoLevelModal.textContent='УР. '+game.autoClickers;if(autoIncomePreviewModal)autoIncomePreviewModal.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));if(clickPowerSmallModal)clickPowerSmallModal.textContent=formatNumber(game.clickPower);el.autoClickPrice.textContent=formatNumber(game.autoClickPrice);el.clickPowerPrice.textContent=formatNumber(game.clickPowerPrice);el.autoClickButton.title='Автокликер • ур. '+game.autoClickers;el.clickPowerButton.title='Сила клика • x'+game.clickPower;el.autoClickButton.disabled=isUpgradeMaxed('auto',0)||game.coins<game.autoClickPrice;el.clickPowerButton.disabled=isUpgradeMaxed('click',0)||game.coins<game.clickPowerPrice;const boostPrice=getBoostPrice();const boostPriceModal=document.getElementById('boostPriceModal');if(boostPriceModal)boostPriceModal.textContent=formatNumber(boostPrice);const boostPriceMain=document.getElementById('boostPriceMain');if(boostPriceMain)boostPriceMain.textContent=formatNumber(boostPrice);document.getElementById('boostInlineStatus')?.toggleAttribute('hidden',!game.boostActive);const boostInlineTimer=document.getElementById('boostInlineTimer');if(boostInlineTimer)boostInlineTimer.textContent=Math.ceil(game.boostTime);el.metaLooksValue.textContent=String(score);el.bestComboPreview.textContent='x'+formatNumber(game.bestCombo);el.playTimePreview.textContent=formatTime(game.playSeconds);updateUpgradeShop();
  if(game.boostActive){
   el.boostButton.disabled=true;
   el.boostButton.textContent='x2 АКТИВЕН';
@@ -1789,7 +1837,12 @@ function createClickRipple(event){
   for(let i=0;i<4;i++){const dot=document.createElement('span');dot.className='click-burst';const a=(Math.PI*2*i/4)+Math.random()*.5;const d=28+Math.random()*24;dot.style.left=x+'px';dot.style.top=y+'px';dot.style.setProperty('--dx',Math.cos(a)*d+'px');dot.style.setProperty('--dy',Math.sin(a)*d+'px');el.characterFrame.appendChild(dot);setTimeout(()=>dot.remove(),580);}
 }
 
+const MIN_CLICK_INTERVAL_MS=60; // антиспам: быстрее человеческого клика не считаем (защита от зажатого Enter / автокликер-макросов)
+let lastRealClickTime=0;
 function clickCharacter(event){
+  const now=Date.now();
+  if(now-lastRealClickTime<MIN_CLICK_INTERVAL_MS)return; // клик пришёл слишком быстро — игнорируем, чтобы Enter/макрос не качали персонажа со скоростью света
+  lastRealClickTime=now;
   ensureAudio();
   createClickRipple(event);
   updateCombo();
@@ -1807,7 +1860,8 @@ function clickCharacter(event){
     playClickSound(false);
     if(navigator.vibrate)navigator.vibrate(5);
   }
-  game.totalClicks+=amount;
+  game.totalClicks+=1;
+  game.rankXP+=1;
   game.coins+=amount;
   game.totalEarned+=amount;
   if(game.mewActive&&game.mewClicks<MEW_JAW_MAX*MEW_JAW_INTERVAL){
@@ -1900,7 +1954,7 @@ function showRewardedAd(onReward){
 
 /* ===================== Оффлайн-доход ===================== */
 function todayKey(date){const d=date||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function computeOfflineIncome(seconds){if(game.autoClickers<=0)return 0;const rate=game.autoClickers*game.clickPower*(1+getLooksScore()/100);return Math.floor(rate*seconds)}
+function computeOfflineIncome(seconds){if(game.autoClickers<=0)return 0;const rate=game.autoClickers*(1+getLooksScore()/75);return Math.floor(rate*seconds)}
 function prepareOfflineEarnings(){
   const last=game.lastSeenTimestamp;
   if(!last){pendingOfflineCoins=0;pendingOfflineSeconds=0;return}
@@ -1967,6 +2021,7 @@ document.querySelectorAll('.stat-category').forEach(btn=>btn.addEventListener('c
 buildUpgradeShop();
 const upgradeScroll=document.getElementById('upgradeShopList');
 if(upgradeScroll){ upgradeScroll.addEventListener('wheel',e=>{ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ e.stopPropagation(); }},{passive:true}); }
+el.characterButton.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '||event.key==='Spacebar'){event.preventDefault()}}); // отключаем встроенную эмуляцию клика браузером по Enter/Space — иначе зажатая клавиша (автоповтор ОС) кликает персонажа со скоростью света
 el.characterButton.addEventListener('click',clickCharacter);el.autoClickButton.addEventListener('click',buyAutoClicker);el.clickPowerButton.addEventListener('click',buyClickPower);el.boostButton.addEventListener('click',activateBoost);document.getElementById('boostButtonModal').addEventListener('click',activateBoost);el.mewButton.addEventListener('click',activateMew);const upgradeModal=document.getElementById('upgradeModal');document.getElementById('upgradeClose')?.addEventListener('click',()=>closeModal(upgradeModal));
 el.boostAdButton.addEventListener('click',()=>{if(game.boostActive){showToast('x2 буст уже активен');return}showRewardedAd(()=>{game.boostActive=true;game.boostTime=BOOST_DURATION;playUiSound('boost');showToast('Буст x2 активирован бесплатно!');updateUI();saveGame()})});
 el.offlineClaimButton.addEventListener('click',()=>claimOfflineEarnings(1));
@@ -1985,7 +2040,7 @@ window.setInterval(()=>{
   if(game.comboCount>0&&Date.now()-comboLastClick>1300)game.comboCount=0;
   updateUI();saveGame()
 },1000);
-window.setInterval(()=>{if(game.autoClickers<=0)return;const amount=game.autoClickers*game.clickPower*getPassiveMultiplier();game.totalClicks+=amount;game.coins+=amount;game.totalEarned+=amount;syncRank(true);updateUI()},1000);
+window.setInterval(()=>{if(game.autoClickers<=0)return;const amount=getPassiveIncome();game.coins+=amount;game.totalEarned+=amount;updateUI()},1000); // totalClicks (и, соответственно, ранг/ачивки-за-клики) больше НЕ растёт от пассивного дохода — только от реальных тапов в clickCharacter
 window.setInterval(saveGame,5000);document.addEventListener('visibilitychange',()=>{if(document.hidden){hiddenAt=Date.now();stopCharacterMusic();saveGame()}else{if(!document.body.classList.contains('menu-open')&&!audioMuted)startCharacterMusic(selectedCharacter);if(hiddenAt&&Date.now()-hiddenAt>30000){maybeShowInterstitial()}}});
 
 /* ===================== Меню / режимы ===================== */
@@ -2135,7 +2190,7 @@ function initGame(){
   prepareOfflineEarnings();
   if(game.boostTime<=0){game.boostActive=false;game.boostTime=0}
   if(game.mewTime<=0)game.mewActive=false;
-  const savedRank=game.currentRank,actualRank=getRankIndexForClicks(game.totalClicks);
+  const savedRank=game.currentRank,actualRank=getRankIndexForClicks(getRankProgressValue());
   if(actualRank>savedRank)applyRankStatBonuses(savedRank,actualRank);
   game.currentRank=actualRank;
   checkAchievements();
