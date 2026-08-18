@@ -64,7 +64,6 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 
 .sound-button{width:42px;padding:10px 0;font-size:16px;line-height:1}
 .sound-button.muted{opacity:.65;filter:grayscale(.4)}
-.shop-icon-button{width:42px;padding:10px 0;font-size:17px;line-height:1}
 .character-card{position:relative}
 .character-card::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),inset 0 -30px 70px rgba(0,0,0,.08)}
 .character-frame::before{animation:ambientGlow 4s ease-in-out infinite}
@@ -158,6 +157,12 @@ button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .critical-amount{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px;font-size:15px;font-weight:800}
 .critical-amount svg{width:18px;height:18px}
 @keyframes criticalPop{0%{opacity:0;transform:translate(-50%,-35%) scale(.7) rotate(-3deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(1deg)}100%{opacity:0;transform:translate(-50%,-130%) scale(1) rotate(0)}}
+.mew-click-effect{
+  position:absolute;z-index:31;pointer-events:none;color:var(--blue-dark);font-size:13px;font-weight:800;
+  background:var(--card);border:1px solid var(--blue);border-radius:10px;padding:3px 9px;
+  text-shadow:none;transform:translate(-50%,-50%);animation:mewFloat .68s cubic-bezier(.2,.7,.2,1) forwards;white-space:nowrap
+}
+@keyframes mewFloat{0%{opacity:0;transform:translate(-50%,0) scale(.8)}18%{opacity:1;transform:translate(-50%,-10%) scale(1.03)}100%{opacity:0;transform:translate(-50%,-120%) scale(1)}}
 .rank-sparkle{position:absolute;z-index:32;pointer-events:none;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(255,203,61,.25),0 0 18px rgba(255,203,61,.9);animation:sparkle .9s ease-out forwards}
 @keyframes sparkle{0%{opacity:0;transform:scale(.2)}25%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3)}}
 
@@ -1639,7 +1644,7 @@ let modalOpenCount=0,lastAdTime=0,upgradeCloseCount=0,hiddenAt=0;
 let ysdk=null;
 const YSDK_INIT=(typeof YaGames!=='undefined'&&YaGames.init)?YaGames.init().then(sdk=>{ysdk=sdk;return sdk}).catch(()=>null):Promise.resolve(null);
 const el={
- coins:document.getElementById('coins'),incomePerSecond:document.getElementById('incomePerSecond'),clickPower:document.getElementById('clickPower'),clickPowerSummary:document.getElementById('clickPowerSummary'),clickPowerSmall:document.getElementById('clickPowerSmall'),looksHeader:document.getElementById('looksHeader'),rankPill:document.getElementById('rankPill'),rankName:document.getElementById('rankName'),rankDescription:document.getElementById('rankDescription'),looksStageBadge:document.getElementById('looksStageBadge'),characterButton:document.getElementById('characterButton'),characterFrame:document.getElementById('characterFrame'),characterImage:document.getElementById('characterImage'),characterPlaceholder:document.getElementById('characterPlaceholder'),characterEmoji:document.getElementById('characterEmoji'),characterPlaceholderTitle:document.getElementById('characterPlaceholderTitle'),characterPlaceholderText:document.getElementById('characterPlaceholderText'),comboBurst:document.getElementById('comboBurst'),metaLooksValue:document.getElementById('metaLooksValue'),mewButton:document.getElementById('mewButton'),mewCooldown:document.getElementById('mewCooldown'),mewStatus:document.getElementById('mewStatus'),progressText:document.getElementById('progressText'),progressFill:document.getElementById('progressFill'),totalClicks:document.getElementById('totalClicks'),cps:document.getElementById('cps'),autoLevel:document.getElementById('autoLevel'),autoIncomePreview:document.getElementById('autoIncomePreview'),autoClickButton:document.getElementById('autoClickButton'),autoClickPrice:document.getElementById('autoClickPrice'),clickPowerButton:document.getElementById('clickPowerButton'),clickPowerPrice:document.getElementById('clickPowerPrice'),boostButton:document.getElementById('boostButton'),boostStatus:document.getElementById('boostStatus'),boostTimer:document.getElementById('boostTimer'),looksScoreValue:document.getElementById('looksScoreValue'),looksRatingValue:document.getElementById('looksRatingValue'),statCards:document.getElementById('statCards'),bestComboPreview:document.getElementById('bestComboPreview'),playTimePreview:document.getElementById('playTimePreview'),achievementsButton:document.getElementById('achievementsButton'),achievementsModal:document.getElementById('achievementsModal'),achievementsClose:document.getElementById('achievementsClose'),achievementsList:document.getElementById('achievementsList'),shopButton:document.getElementById('shopButton'),shopModal:document.getElementById('shopModal'),shopClose:document.getElementById('shopClose'),rankUp:document.getElementById('rankUp'),rankUpTitle:document.getElementById('rankUpTitle'),rankUpDescription:document.getElementById('rankUpDescription'),rankClose:document.getElementById('rankClose'),rankBonus:document.querySelector('.rank-bonus'),toast:document.getElementById('toast'),
+ coins:document.getElementById('coins'),incomePerSecond:document.getElementById('incomePerSecond'),clickPower:document.getElementById('clickPower'),clickPowerSummary:document.getElementById('clickPowerSummary'),clickPowerSmall:document.getElementById('clickPowerSmall'),looksHeader:document.getElementById('looksHeader'),rankPill:document.getElementById('rankPill'),rankName:document.getElementById('rankName'),rankDescription:document.getElementById('rankDescription'),looksStageBadge:document.getElementById('looksStageBadge'),characterButton:document.getElementById('characterButton'),characterFrame:document.getElementById('characterFrame'),characterImage:document.getElementById('characterImage'),characterPlaceholder:document.getElementById('characterPlaceholder'),characterEmoji:document.getElementById('characterEmoji'),characterPlaceholderTitle:document.getElementById('characterPlaceholderTitle'),characterPlaceholderText:document.getElementById('characterPlaceholderText'),comboBurst:document.getElementById('comboBurst'),metaLooksValue:document.getElementById('metaLooksValue'),mewButton:document.getElementById('mewButton'),mewCooldown:document.getElementById('mewCooldown'),mewStatus:document.getElementById('mewStatus'),progressText:document.getElementById('progressText'),progressFill:document.getElementById('progressFill'),totalClicks:document.getElementById('totalClicks'),cps:document.getElementById('cps'),autoLevel:document.getElementById('autoLevel'),autoIncomePreview:document.getElementById('autoIncomePreview'),autoClickButton:document.getElementById('autoClickButton'),autoClickPrice:document.getElementById('autoClickPrice'),clickPowerButton:document.getElementById('clickPowerButton'),clickPowerPrice:document.getElementById('clickPowerPrice'),boostButton:document.getElementById('boostButton'),boostStatus:document.getElementById('boostStatus'),boostTimer:document.getElementById('boostTimer'),looksScoreValue:document.getElementById('looksScoreValue'),looksRatingValue:document.getElementById('looksRatingValue'),statCards:document.getElementById('statCards'),bestComboPreview:document.getElementById('bestComboPreview'),playTimePreview:document.getElementById('playTimePreview'),achievementsButton:document.getElementById('achievementsButton'),achievementsModal:document.getElementById('achievementsModal'),achievementsClose:document.getElementById('achievementsClose'),achievementsList:document.getElementById('achievementsList'),shopModal:document.getElementById('shopModal'),shopClose:document.getElementById('shopClose'),rankUp:document.getElementById('rankUp'),rankUpTitle:document.getElementById('rankUpTitle'),rankUpDescription:document.getElementById('rankUpDescription'),rankClose:document.getElementById('rankClose'),rankBonus:document.querySelector('.rank-bonus'),toast:document.getElementById('toast'),
  offlineModal:document.getElementById('offlineModal'),offlineSub:document.getElementById('offlineSub'),offlineAmount:document.getElementById('offlineAmount'),offlineClaimButton:document.getElementById('offlineClaimButton'),offlineDoubleButton:document.getElementById('offlineDoubleButton'),
  dailyModal:document.getElementById('dailyModal'),dailySub:document.getElementById('dailySub'),dailyAmount:document.getElementById('dailyAmount'),dailyStreakRow:document.getElementById('dailyStreakRow'),dailyClaimButton:document.getElementById('dailyClaimButton'),
  boostAdButton:document.getElementById('boostAdButton')
@@ -1942,6 +1947,16 @@ function createRankSparkles(){
     window.setTimeout(()=>s.remove(),920);
   }
 }
+function createMewEffect(event){
+  const effect=document.createElement('div');
+  effect.className='mew-click-effect';
+  effect.textContent='МЬЮИНГ x1.5';
+  const rect=el.characterFrame.getBoundingClientRect(),pos=getPointerPosition(event,rect);
+  effect.style.left=Math.max(30,Math.min(rect.width-30,pos.x))+'px';
+  effect.style.top=Math.max(40,Math.min(rect.height-40,pos.y-26))+'px';
+  el.characterFrame.append(effect);
+  window.setTimeout(()=>effect.remove(),700);
+}
 function createCriticalEffect(event,amount){const effect=document.createElement('div');effect.className='critical-effect';effect.innerHTML='<span class="critical-title">КРИТ! ×'+CRIT_MULTIPLIER+'</span><span class="critical-amount">'+COIN_ICON+' +'+formatNumber(amount)+'</span>';const rect=el.characterFrame.getBoundingClientRect(),pos=getPointerPosition(event,rect);effect.style.left=Math.max(85,Math.min(rect.width-85,pos.x))+'px';effect.style.top=Math.max(70,Math.min(rect.height-70,pos.y))+'px';el.characterFrame.append(effect);el.characterFrame.classList.remove('critical-hit');void el.characterFrame.offsetWidth;el.characterFrame.classList.add('critical-hit');window.setTimeout(()=>{effect.remove();el.characterFrame.classList.remove('critical-hit')},1050)}
 // --- lightweight game audio + original character music: no external files ---
 let audioCtx=null, masterBus=null, audioMuted=localStorage.getItem('looksmax_audio_muted')==='1';
@@ -2031,13 +2046,14 @@ function clickCharacter(event){
   ensureAudio();
   createClickRipple(event);
   updateCombo();
-  // Мьюинг: отдельный гарантированный бонус, чтобы он был заметен даже на x1.
-  // Без мьюинга клик считается по обычной формуле. Во время мьюинга добавляем
-  // ещё +50% от базового клика, округляя бонус вверх минимум до 1 монеты.
-  const baseMultiplier=getStatsMultiplier()*(game.boostActive?2:1)*getComboMultiplier();
-  const baseAmount=game.clickPower*1.60*baseMultiplier;
-  const mewBonus=game.mewActive?Math.max(1,Math.ceil(baseAmount*0.5)):0;
-  let amount=baseAmount+mewBonus;
+  // Единая точка правды для всех множителей клика: статы, буст x2, комбо и мьюинг x1.5.
+  // Раньше мьюинг считался отдельным "гарантированным бонусом" поверх базовой формулы —
+  // это давало неточный (и на старте почти незаметный) прирост. Теперь используем
+  // getCurrentMultiplier(), которая уже содержит (game.mewActive?1.5:1), поэтому бонус
+  // всегда ровно x1.5 и корректно перемножается с остальными множителями.
+  const multiplier=getCurrentMultiplier();
+  const wasMewing=game.mewActive;
+  let amount=game.clickPower*1.60*multiplier;
   const crit=Math.random()<getCritChance();
   maybeCharacterReaction(crit);
   if(crit){
@@ -2051,6 +2067,7 @@ function clickCharacter(event){
     playClickSound(false);
     if(navigator.vibrate)navigator.vibrate(5);
   }
+  if(wasMewing)createMewEffect(event);
   game.totalClicks+=1;
   // Сила клика ускоряет ранг, но очень слабо. Игрок всё равно должен много тапать.
   game.rankXP+=getRankXPPerClick();
@@ -2222,7 +2239,7 @@ el.boostAdButton.addEventListener('click',()=>{if(game.boostActive){showToast('x
 el.offlineClaimButton.addEventListener('click',()=>claimOfflineEarnings(1));
 el.offlineDoubleButton.addEventListener('click',()=>showRewardedAd(()=>claimOfflineEarnings(2)));
 el.dailyClaimButton.addEventListener('click',claimDailyReward);
-setAudioButton();document.getElementById('soundButton')?.addEventListener('click',toggleAudio);document.getElementById('mtSoundButton')?.addEventListener('click',toggleAudio);document.getElementById('mtSettingsButton')?.addEventListener('click',()=>openSettings(true));el.achievementsButton.addEventListener('click',()=>{renderAchievements();openModal(el.achievementsModal)});el.achievementsClose.addEventListener('click',()=>closeModal(el.achievementsModal));el.shopButton?.addEventListener('click',()=>openModal(el.shopModal));document.getElementById('mtShopButton')?.addEventListener('click',()=>openModal(el.shopModal));el.shopClose?.addEventListener('click',()=>closeModal(el.shopModal));el.shopModal?.addEventListener('click',event=>{if(event.target===el.shopModal)closeModal(el.shopModal)});el.rankClose.addEventListener('click',closeRankUp);el.rankUp.addEventListener('click',event=>{if(event.target===el.rankUp)closeRankUp()});el.achievementsModal.addEventListener('click',event=>{if(event.target===el.achievementsModal)closeModal(el.achievementsModal)});
+setAudioButton();document.getElementById('soundButton')?.addEventListener('click',toggleAudio);document.getElementById('mtSoundButton')?.addEventListener('click',toggleAudio);el.achievementsButton.addEventListener('click',()=>{renderAchievements();openModal(el.achievementsModal)});el.achievementsClose.addEventListener('click',()=>closeModal(el.achievementsModal));document.getElementById('mtShopButton')?.addEventListener('click',()=>openModal(el.shopModal));el.shopClose?.addEventListener('click',()=>closeModal(el.shopModal));el.shopModal?.addEventListener('click',event=>{if(event.target===el.shopModal)closeModal(el.shopModal)});el.rankClose.addEventListener('click',closeRankUp);el.rankUp.addEventListener('click',event=>{if(event.target===el.rankUp)closeRankUp()});el.achievementsModal.addEventListener('click',event=>{if(event.target===el.achievementsModal)closeModal(el.achievementsModal)});
 window.addEventListener('keydown',event=>{if(event.key==='Escape'){closeModal(el.achievementsModal);if(el.shopModal)closeModal(el.shopModal);closeRankUp()}});
 el.offlineModal.addEventListener('click',event=>{if(event.target===el.offlineModal)claimOfflineEarnings(1)});
 el.dailyModal.addEventListener('click',event=>{if(event.target===el.dailyModal)claimDailyReward()});
@@ -2316,7 +2333,6 @@ document.getElementById('settingsCharacter').addEventListener('click',()=>openCh
 document.getElementById('settingsSound').addEventListener('click',()=>{toggleAudio();openSettings()});
 document.getElementById('settingsReset').addEventListener('click',()=>{if(window.confirm('Сбросить весь прогресс?')){resetGame();showMenuToast('Прогресс сброшен')}});
 document.getElementById('characterBack').addEventListener('click',()=>{if(panelMidGame)closePanelToGame(menuUI.characters);else backToMain()});
-document.getElementById('gameSettingsButton')?.addEventListener('click',()=>openSettings(true));
 const gameMenuPanel=document.getElementById('gameMenuPanel');
 const gameMenuBackdrop=document.getElementById('gameMenuBackdrop');
 const gameMenuButton=document.getElementById('gameMenuButton');
@@ -3882,24 +3898,6 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .brand-text span{color:var(--pink-dark)!important}
 @media(max-width:400px){.menu-logo-text,.brand-text{font-size:.86em}}
 </style>
-
-<script>
-(function(){
-  const photos={
-    normal:'',
-    tun:'',
-    bacon:''
-  };
-  Object.entries(photos).forEach(([key,src])=>{
-    const img=document.getElementById('char-photo-'+key);
-    if(!img || !src) return;
-    img.src=src;
-    img.classList.remove('photo-placeholder');
-    const svg=img.parentElement.querySelector('svg');
-    if(svg) svg.style.display='none';
-  });
-})();
-</script>
 
 <style id="game-menu-responsive-final">
 @media(max-width:900px){
