@@ -1238,7 +1238,7 @@ body{
   .upgrade-shop-panel{grid-column:1 !important;grid-row:4 !important;height:420px !important;min-height:420px !important;}
 }
 @media (max-width:760px){
-  .top-actions .sound-button,.top-actions .settings-gear,.top-actions #shopButton{display:none}
+  .top-actions .sound-button,.top-actions .settings-gear,.top-actions #shopButton,.top-actions .game-menu-button{display:none}
   .mobile-tabbar{
     display:flex;position:fixed;left:0;right:0;bottom:0;z-index:130;
     gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));
@@ -1378,12 +1378,8 @@ body{
       <button class="select-back shop-back" id="shopBack" type="button"><svg class="btn-ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>НАЗАД</span></button>
     </div>
     <div class="shop-title">МАГАЗИН</div>
-    <div class="shop-subtitle">Товары и косметические предметы</div>
-    <div class="shop-grid">
-      <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">SUPER POWER</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
-      <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">GLOW PACK</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
-      <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">VIP LOOKS</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
-    </div>
+    <div class="shop-subtitle">Постоянные улучшения. Оплата реальными деньгами через Яндекс Игры</div>
+    <div class="shop-grid" id="shopGridMenu"></div>
   </div>
 </div>
 
@@ -1421,6 +1417,8 @@ body{
     <div class="volume-row"><label for="volSfx">ЭФФЕКТЫ</label><input type="range" id="volSfx" min="0" max="100" value="85"><span class="volume-value" id="volSfxValue">85%</span></div>
     <div class="settings-row"><div><div class="settings-label">СМЕНА ПЕРСОНАЖА</div><div class="settings-desc">Можно выбрать героя перед запуском.</div></div><button class="settings-toggle" id="settingsCharacter" type="button">ВЫБРАТЬ</button></div>
     <div class="settings-row"><div><div class="settings-label">ДОСТИЖЕНИЯ</div><div class="settings-desc">Челленджи и награды за прогресс.</div></div><button class="settings-toggle" id="achievementsButton" type="button">ОТКРЫТЬ</button></div>
+    <div class="settings-row"><div><div class="settings-label">ПЕРЕРОЖДЕНИЕ</div><div class="settings-desc">Сбрось забег ради вечного бонуса к доходу.</div></div><button class="settings-toggle" id="settingsRebirthButton" type="button">ОТКРЫТЬ</button></div>
+    <div class="settings-row"><div><div class="settings-label">ЛИДЕРЫ</div><div class="settings-desc">Рейтинг игроков в Яндекс Играх.</div></div><button class="settings-toggle" id="settingsLeaderboardButton" type="button">ОТКРЫТЬ</button></div>
     <div class="settings-row"><div><div class="settings-label">СБРОС ПРОГРЕССА</div><div class="settings-desc">Удаляет локальный прогресс игры.</div></div><button class="settings-toggle off" id="settingsReset" type="button">СБРОСИТЬ</button></div>
   </div>
 </div>
@@ -1432,16 +1430,12 @@ body{
     <div class="top-actions">
       <div class="playtime-top" aria-label="Время игры"><span class="playtime-top-label">ВРЕМЯ</span><span id="playTimePreview">0 сек</span></div>
       <button class="mini-action sound-button" id="soundButton" type="button" aria-label="Звук" title="Звук"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6l4.9 4V5.5l-4.9 4H4z" fill="currentColor" stroke="none"/><path d="M16 8.5a5 5 0 010 7"/><path d="M18.5 6a8.5 8.5 0 010 12"/></svg></button>
-      <button class="mini-action settings-gear" id="gameSettingsButton" type="button" aria-label="Настройки" title="Настройки"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
-      <button class="mini-action shop-icon-button" id="shopButton" type="button" aria-label="Магазин" title="Магазин"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg></button>
       <button class="mini-action game-menu-button" id="gameMenuButton" type="button" aria-label="Меню" title="Меню" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
     </div>
   </header>
 
   <nav class="mobile-tabbar" id="mobileTabbar" aria-label="Быстрый доступ">
     <button class="mobile-tab" id="mtSoundButton" type="button"><span class="mobile-tab-icon" id="mtSoundIcon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6l4.9 4V5.5l-4.9 4H4z" fill="currentColor" stroke="none"/><path d="M16 8.5a5 5 0 010 7"/><path d="M18.5 6a8.5 8.5 0 010 12"/></svg></span><span class="mobile-tab-label">Звук</span></button>
-    <button class="mobile-tab" id="mtSettingsButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span class="mobile-tab-label">Настройки</span></button>
-    <button class="mobile-tab" id="mtShopButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg></span><span class="mobile-tab-label">Магазин</span></button>
     <button class="mobile-tab" id="mtMenuButton" type="button"><span class="mobile-tab-icon"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg></span><span class="mobile-tab-label">Меню</span></button>
   </nav>
 
@@ -1454,6 +1448,7 @@ body{
     <div class="game-menu-actions">
       <button class="game-menu-action primary" id="gameMenuContinue" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5z"/></svg><span>ПРОДОЛЖИТЬ ИГРУ</span></button>
       <button class="game-menu-action" id="gameMenuShop" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg><span>МАГАЗИН</span></button>
+      <button class="game-menu-action" id="gameMenuLeaderboard" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M7 6H4a3 3 0 003 3"/><path d="M17 6h3a3 3 0 01-3 3"/></svg><span>ЛИДЕРЫ</span></button>
       <button class="game-menu-action" id="gameMenuSettings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33 1.65 1.65 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 01-1.51 1z"/></svg><span>НАСТРОЙКИ</span></button>
       <div class="game-menu-divider"></div>
       <button class="game-menu-action warn" id="gameMenuBackMain" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l-6 6 6 6"/><path d="M4 12h11a5 5 0 015 5v1"/></svg><span>ГЛАВНОЕ МЕНЮ</span></button>
@@ -1463,6 +1458,7 @@ body{
   <section class="rank-row">
     <div class="rank-info"><div class="rank-label">ТВОЙ УРОВЕНЬ</div><div class="rank-name" id="rankName">SUB 3</div><div class="rank-desc" id="rankDescription">Начало пути</div></div>
     <div class="looks-badge" id="looksStageBadge">START</div>
+    <button class="rebirth-standalone-button" id="topRebirthButton" type="button" aria-label="Переродиться" title="Переродиться"><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span id="topRebirthButtonLabel">ПЕРЕРОДИТЬСЯ</span></button>
     <div class="hidden-ui"><span id="rankPill"></span><span id="looksHeader">1</span><span id="incomePerSecond">0</span></div>
   </section>
 
@@ -1518,11 +1514,34 @@ body{
 <div class="modal" id="achievementsModal" aria-hidden="true"><div class="modal-box"><div class="modal-head"><div><div class="modal-title">ЧЕЛЛЕНДЖИ</div><div class="modal-sub">Выполняй цели и забирай награды!</div></div><button class="close-button" id="achievementsClose" type="button">ГОТОВО</button></div><div class="achievements" id="achievementsList"></div></div></div>
 
 <div class="modal" id="shopModal" aria-hidden="true"><div class="modal-box">
-  <div class="modal-head"><div><div class="modal-title">МАГАЗИН</div><div class="modal-sub">Товары и косметические предметы.</div></div><button class="close-button" id="shopClose" type="button">ГОТОВО</button></div>
-  <div class="shop-grid">
-    <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">SUPER POWER</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
-    <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">GLOW PACK</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
-    <div class="store-card"><div class="store-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg></div><div class="store-name">VIP LOOKS</div><div class="store-desc">Будет доступно позже</div><button class="store-button" type="button" disabled>СКОРО</button></div>
+  <div class="modal-head"><div><div class="modal-title">МАГАЗИН</div><div class="modal-sub">Постоянные улучшения — оплата реальными деньгами через Яндекс Игры.</div></div><button class="close-button" id="shopClose" type="button">ГОТОВО</button></div>
+  <div class="shop-grid" id="shopGridModal"></div>
+</div></div>
+
+<div class="modal" id="rebirthModal" aria-hidden="true"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title">ПЕРЕРОЖДЕНИЕ</div><div class="modal-sub">Сбрось текущий забег — получи вечный бонус к доходу</div></div><button class="close-button" id="rebirthClose" type="button">ГОТОВО</button></div>
+  <div class="rebirth-panel">
+    <div class="rebirth-stats-grid">
+      <div class="rebirth-stat-card"><div class="rebirth-stat-label">ОСКОЛКОВ</div><div class="rebirth-stat-value" id="rebirthShards">0</div></div>
+      <div class="rebirth-stat-card"><div class="rebirth-stat-label">ПЕРЕРОЖДЕНИЙ</div><div class="rebirth-stat-value" id="rebirthLevel">0</div></div>
+      <div class="rebirth-stat-card"><div class="rebirth-stat-label">БОНУС ДОХОДА</div><div class="rebirth-stat-value" id="rebirthBonus">+0%</div></div>
+    </div>
+    <div class="rebirth-progress-block">
+      <div class="rebirth-progress-row"><span>Заработано в этом забеге</span><strong id="rebirthRunEarned">0</strong></div>
+      <div class="rebirth-progress-track" id="rebirthProgressTrack"><div class="rebirth-progress-fill" id="rebirthProgressFill"></div></div>
+      <div class="rebirth-progress-text" id="rebirthProgressText">0 / 20 000</div>
+    </div>
+    <div class="rebirth-gain" id="rebirthGainText">Нужно больше заработать в этом забеге</div>
+    <button class="menu-button primary rebirth-confirm" id="rebirthConfirmButton" type="button" disabled><svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>ПЕРЕРОДИТЬСЯ</span></button>
+    <div class="rebirth-note">Обнулит монеты, ранг, силу клика, автокликер и характеристики. Достижения, статистика кликов и время игры сохранятся навсегда.</div>
+  </div>
+</div></div>
+
+<div class="modal" id="leaderboardModal" aria-hidden="true"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title">ЛИДЕРЫ</div><div class="modal-sub">Рейтинг игроков по общему заработку</div></div><button class="close-button" id="leaderboardClose" type="button">ГОТОВО</button></div>
+  <div class="leaderboard-panel">
+    <div class="leaderboard-status" id="leaderboardStatus">Загрузка…</div>
+    <div class="leaderboard-list" id="leaderboardList"></div>
   </div>
 </div></div>
 
@@ -1605,7 +1624,8 @@ const DEFAULT_GAME={
  totalClicks:0,coins:0,totalEarned:0,currentRank:0,clickPower:1,autoClickers:0,boostActive:false,boostTime:0,
  autoClickPrice:100,clickPowerPrice:250,comboCount:0,bestCombo:1,playSeconds:0,upgradesBought:0,mewActive:false,mewTime:0,mewCooldown:0,mewClicks:0,
  lastSeenTimestamp:null,lastLoginDate:null,loginStreak:0,rankXP:0,
- achievements:{},characterStats:{jawline:1,eyes:1,nose:1,skin:1,physique:1,harmony:1,aura:1,muscle:1,posture:1,leanness:1},upgradePackages:{click:{},auto:{}}
+ achievements:{},characterStats:{jawline:1,eyes:1,nose:1,skin:1,physique:1,harmony:1,aura:1,muscle:1,posture:1,leanness:1},upgradePackages:{click:{},auto:{}},
+ shopUpgrades:{autoBoost:0,critBoost:0,discount:0},shopGlowOwned:false,shopVipOwned:false
 };
 const RANK_STAT_BONUS={1:1,2:1,3:1,4:1,5:1,6:2};
 // --- базовые константы оффлайн-дохода и ежедневных наград ---
@@ -1624,7 +1644,7 @@ const el={
  dailyModal:document.getElementById('dailyModal'),dailySub:document.getElementById('dailySub'),dailyAmount:document.getElementById('dailyAmount'),dailyStreakRow:document.getElementById('dailyStreakRow'),dailyClaimButton:document.getElementById('dailyClaimButton'),
  boostAdButton:document.getElementById('boostAdButton')
 };
-function cloneDefaultGame(){return {...DEFAULT_GAME,achievements:{},characterStats:{...DEFAULT_GAME.characterStats}}}
+function cloneDefaultGame(){return {...DEFAULT_GAME,achievements:{},characterStats:{...DEFAULT_GAME.characterStats},shopUpgrades:{...DEFAULT_GAME.shopUpgrades}}}
 function safeNumber(value,fallback=0){const n=Number(value);return Number.isFinite(n)?n:fallback}
 function safeInteger(value,fallback=0){const n=Math.floor(Number(value));return Number.isFinite(n)?n:fallback}
 function clampStat(value){return Math.max(1,Math.min(STAT_MAX_LEVEL,safeInteger(value,1)))}
@@ -1641,18 +1661,134 @@ function getRankXPPerClick(){
 }
 function getRankIndexForClicks(progress){let index=0;for(let i=0;i<RANKS.length;i++){if(progress>=RANKS[i].required)index=i;else break}return index}
 function getRankProgressValue(){return Math.max(0,safeNumber(game.rankXP,0))}
-function getLooksScore(){let sum=0;for(const def of STAT_DEFS)sum+=clampStat(game.characterStats[def.key]);return sum/STAT_DEFS.length}
+function getLooksScore(){let sum=0;for(const def of STAT_DEFS)sum+=clampStat(game.characterStats[def.key]);let score=sum/STAT_DEFS.length;if(game.shopVipOwned)score+=8;return score}
 function getStatsMultiplier(){return 1+getLooksScore()/75}
 function getComboMultiplier(){const now=Date.now();if(now-comboLastClick>1300)return 1;return 1+Math.min(15,Math.max(0,game.comboCount-1))*0.04}
-function getCritChance(){const aura=clampStat(game.characterStats.aura);return Math.min(CRIT_MAX_CHANCE,CRIT_BASE_CHANCE+(aura-1)*0.0007)}
+function getCritChance(){const aura=clampStat(game.characterStats.aura);const bonus=getShopCritBonus();return Math.min(CRIT_MAX_CHANCE+bonus,CRIT_BASE_CHANCE+(aura-1)*0.0007+bonus)}
 function getBoostPrice(){const income=Math.max(1,game.autoClickers*game.clickPower*getPassiveMultiplier());const projectedCost=income*BOOST_DURATION*0.45;const rankFactor=Math.pow(BOOST_RANK_GROWTH,game.currentRank);const looksFactor=1+Math.min(BOOST_LOOKS_INFLUENCE,getLooksScore()/200);return Math.max(BOOST_BASE_COST,Math.ceil(Math.max(projectedCost,BOOST_BASE_COST*rankFactor*0.35)*looksFactor/50)*50)}
 function getCurrentMultiplier(){return getStatsMultiplier()*(game.boostActive?2:1)*getComboMultiplier()*(game.mewActive?1.5:1)}
-function getPassiveMultiplier(){return getStatsMultiplier()*(game.boostActive?2:1)*(game.mewActive?1.5:1)}
+function getPassiveMultiplier(){return getStatsMultiplier()*(game.boostActive?2:1)*(game.mewActive?1.5:1)*getShopAutoBonus()}
 function getPassiveIncome(){return game.autoClickers*getPassiveMultiplier()}
 function getLooksStage(score){if(score>=76)return'max';if(score>=51)return'high';if(score>=26)return'mid';return'low'}
 function getLooksRatingName(score){if(score>=92)return'МАКСИМУМ';if(score>=76)return'ЭЛИТА';if(score>=51)return'РЕЗКИЙ';if(score>=26)return'РАЗВИВАЕТСЯ';return'НЕ ПРОКАЧАН'}
 function getNextLooksStage(score){if(score<26)return'РАЗВИВАЕТСЯ · 26';if(score<51)return'РЕЗКИЙ · 51';if(score<76)return'ЭЛИТА · 76';if(score<92)return'МАКСИМУМ · 92';return'МАКСИМУМ'}
-function getStatPrice(def,level){return Math.max(1,Math.ceil(def.basePrice*Math.pow(STAT_PRICE_GROWTH,level-1)))}
+function getStatPrice(def,level){const base=Math.max(1,Math.ceil(def.basePrice*Math.pow(STAT_PRICE_GROWTH,level-1)));return Math.max(1,Math.ceil(base*(1-getShopDiscount())))}
+
+// ===== МАГАЗИН (постоянные бусты за монеты) =====
+const SHOP_ITEMS=[
+ {key:'autoBoost',type:'level',name:'ТУРБО-АВТОКЛИКЕР',desc:'Каждая покупка: +8% к пассивному доходу навсегда',accent:'blue',productId:'turbo_auto_boost',fallbackPrice:'≈39 ₽',maxLevel:8},
+ {key:'critBoost',type:'level',name:'МАГНИТ УДАЧИ',desc:'Каждая покупка: +0.5% к шансу крит-клика',accent:'gold',productId:'luck_magnet_boost',fallbackPrice:'≈39 ₽',maxLevel:8},
+ {key:'discount',type:'level',name:'ТОРГАШ',desc:'Каждая покупка: -3% к цене прокачек характеристик и апгрейдов',accent:'green',productId:'shop_discount_boost',fallbackPrice:'≈59 ₽',maxLevel:5},
+ {key:'glow',type:'once',name:'GLOW PACK',desc:'Разово: сияющая аура вокруг персонажа навсегда',accent:'purple',productId:'glow_pack',fallbackPrice:'≈99 ₽'},
+ {key:'vip',type:'once',name:'VIP LOOKS',desc:'Разово: +8 к Looks Score навсегда',accent:'gold',productId:'vip_looks',fallbackPrice:'≈149 ₽'}
+];
+function ensureShopUpgrades(){if(!game.shopUpgrades||typeof game.shopUpgrades!=='object')game.shopUpgrades={autoBoost:0,critBoost:0,discount:0};for(const k of['autoBoost','critBoost','discount'])game.shopUpgrades[k]=Math.max(0,safeInteger(game.shopUpgrades[k],0))}
+function shopLevel(key){ensureShopUpgrades();return safeInteger(game.shopUpgrades[key],0)}
+function isShopItemOwned(item){if(item.type!=='once')return false;if(item.key==='glow')return Boolean(game.shopGlowOwned);if(item.key==='vip')return Boolean(game.shopVipOwned);return false}
+function isShopItemMaxed(item){return item.type==='level'&&shopLevel(item.key)>=item.maxLevel}
+function getShopAutoBonus(){return 1+shopLevel('autoBoost')*0.08}
+function getShopCritBonus(){return shopLevel('critBoost')*0.005}
+function getShopDiscount(){return typeof game==='undefined'||!game.shopUpgrades?0:Math.min(0.5,shopLevel('discount')*0.03)}
+
+// ===== Оплата через Яндекс Игры (реальные деньги, внутренняя валюта платформы) =====
+// ID товаров ниже должны быть заведены 1-в-1 в Разработчик-консоли Яндекс Игр,
+// вкладка "Покупки в приложении". Цена и валюта берутся из каталога Яндекса автоматически.
+let yandexPayments=null,yandexPaymentsReady=false,yandexCatalog={};
+function initYandexPayments(sdk){
+ if(!sdk||typeof sdk.getPayments!=='function'){yandexPaymentsReady=false;updateShopGrids();return}
+ sdk.getPayments({signed:false}).then(payments=>{
+  yandexPayments=payments;yandexPaymentsReady=true;
+  return payments.getCatalog().catch(()=>[]);
+ }).then(catalog=>{
+  yandexCatalog={};
+  if(Array.isArray(catalog))for(const product of catalog)yandexCatalog[product.id]=product;
+  checkUnprocessedShopPurchases();
+  updateShopGrids();
+ }).catch(()=>{yandexPaymentsReady=false;updateShopGrids()});
+}
+function applyShopPurchaseReward(productID){
+ const item=SHOP_ITEMS.find(i=>i.productId===productID);if(!item)return false;
+ ensureShopUpgrades();
+ if(item.type==='once'){
+  if(item.key==='glow')game.shopGlowOwned=true;
+  if(item.key==='vip')game.shopVipOwned=true;
+ }else{
+  if(!isShopItemMaxed(item))game.shopUpgrades[item.key]=shopLevel(item.key)+1;
+ }
+ game.upgradesBought=(game.upgradesBought||0)+1;
+ return true;
+}
+// Обязательная проверка недообработанных покупок при каждом запуске (требование модерации Яндекс Игр)
+function checkUnprocessedShopPurchases(){
+ if(!yandexPayments)return;
+ yandexPayments.getPurchases().then(purchases=>{
+  if(!Array.isArray(purchases)||!purchases.length)return;
+  let changed=false;
+  const chain=purchases.reduce((p,purchase)=>p.then(()=>{
+   if(applyShopPurchaseReward(purchase.productID))changed=true;
+   return yandexPayments.consumePurchase(purchase.purchaseToken).catch(()=>{});
+  }),Promise.resolve());
+  return chain.then(()=>{if(changed){updateUI();saveGame()}});
+ }).catch(()=>{});
+}
+function getShopPriceLabel(item){
+ const product=yandexCatalog[item.productId];
+ if(product&&product.price)return product.price;
+ return item.fallbackPrice;
+}
+function buyShopItem(key){
+ const item=SHOP_ITEMS.find(i=>i.key===key);if(!item)return;
+ ensureShopUpgrades();
+ if(isShopItemOwned(item)){showToast(item.name+' уже куплено');return}
+ if(isShopItemMaxed(item)){showToast(item.name+' уже МАКС');return}
+ if(!yandexPaymentsReady||!yandexPayments){showToast('Покупки доступны только внутри Яндекс Игр');return}
+ const btn=document.querySelector('[data-shop-key="'+key+'"]');if(btn)btn.disabled=true;
+ yandexPayments.purchase({id:item.productId}).then(purchase=>{
+  applyShopPurchaseReward(purchase.productID);
+  return yandexPayments.consumePurchase(purchase.purchaseToken);
+ }).then(()=>{
+  playUiSound('buy');showToast(item.name+' куплено!');updateUI();saveGame();
+ }).catch(()=>{showToast('Покупка отменена');updateShopGrids();});
+}
+function shopCardHTML(item){
+ const icon='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1L12 2z"/></svg>';
+ const levelBadge=item.type==='level'?'<div class="store-level" data-shop-level="'+item.key+'">УР. 0/'+item.maxLevel+'</div>':'';
+ return '<div class="store-card store-accent-'+item.accent+'" data-shop-card="'+item.key+'"><div class="store-icon">'+icon+'</div><div class="store-name">'+item.name+'</div><div class="store-desc">'+item.desc+'</div>'+levelBadge+'<button class="store-button" type="button" data-shop-key="'+item.key+'">…</button></div>';
+}
+function buildShopGrids(){
+ for(const id of['shopGridModal','shopGridMenu']){
+  const root=document.getElementById(id);if(!root)continue;
+  root.innerHTML=SHOP_ITEMS.map(shopCardHTML).join('');
+ }
+ updateShopGrids();
+}
+function updateShopGrids(){
+ ensureShopUpgrades();
+ document.querySelectorAll('[data-shop-key]').forEach(btn=>{
+  const item=SHOP_ITEMS.find(i=>i.key===btn.dataset.shopKey);if(!item)return;
+  const card=btn.closest('.store-card');
+  const owned=isShopItemOwned(item),maxed=isShopItemMaxed(item);
+  if(item.type==='level'){
+   const lvlEl=card?.querySelector('[data-shop-level="'+item.key+'"]');
+   if(lvlEl)lvlEl.textContent='УР. '+shopLevel(item.key)+'/'+item.maxLevel;
+  }
+  if(owned||maxed){
+   btn.disabled=true;btn.classList.remove('can-buy');btn.classList.add('is-owned-btn');
+   btn.textContent=owned?'КУПЛЕНО':'МАКС';
+   card?.classList.add('is-owned');
+   return;
+  }
+  card?.classList.remove('is-owned');
+  if(!yandexPaymentsReady){
+   btn.disabled=true;btn.classList.remove('can-buy');btn.classList.remove('is-owned-btn');btn.classList.add('store-unavailable');
+   btn.textContent='ТОЛЬКО В ЯНДЕКС ИГРАХ';
+   return;
+  }
+  btn.classList.remove('store-unavailable');
+  btn.disabled=false;btn.classList.add('can-buy');btn.classList.remove('is-owned-btn');
+  btn.textContent=getShopPriceLabel(item)+' • КУПИТЬ';
+ });
+}
 
 const CLICK_UPGRADE_TIERS=[
  {amount:1,baseCost:225,maxBought:15,label:'+1 СИЛА',desc:'Каждый ручной клик приносит +1',icon:'⚡',unlockRank:0},
@@ -1681,7 +1817,8 @@ function ensureUpgradePackages(){
 }
 function packageCost(type,index){
  ensureUpgradePackages();const defs=type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS;const def=defs[index];
- const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));return Math.ceil(def.baseCost*Math.pow(1.45,bought));
+ const bought=Math.max(0,safeInteger(game.upgradePackages[type][index],0));const base=Math.ceil(def.baseCost*Math.pow(1.45,bought));
+ return Math.max(1,Math.ceil(base*(1-getShopDiscount())));
 }
 function isUpgradeMaxed(type,index){ensureUpgradePackages();const def=(type==='click'?CLICK_UPGRADE_TIERS:AUTO_UPGRADE_TIERS)[index];return !!def&&safeInteger(game.upgradePackages[type][index],0)>=(def.maxBought||Infinity)}
 function buildUpgradeShop(){
@@ -1746,6 +1883,7 @@ function loadGame(){
    game.lastLoginDate=typeof game.lastLoginDate==='string'?game.lastLoginDate:null;
    game.loginStreak=Math.max(0,safeInteger(game.loginStreak,0));
    for(const def of STAT_DEFS)game.characterStats[def.key]=clampStat(game.characterStats[def.key]);
+   ensureShopUpgrades();game.shopGlowOwned=Boolean(game.shopGlowOwned);game.shopVipOwned=Boolean(game.shopVipOwned);
  }catch(error){console.warn('Load failed:',error);game=cloneDefaultGame()}
 }
 function applyRankStatBonuses(fromRankIndex,toRankIndex){for(let i=fromRankIndex+1;i<=toRankIndex;i++){const bonus=RANK_STAT_BONUS[i];if(bonus===undefined)continue;for(const def of STAT_DEFS)game.characterStats[def.key]=bonus==='max'?STAT_MAX_LEVEL:clampStat(clampStat(game.characterStats[def.key])+bonus)}}
@@ -1757,7 +1895,7 @@ function updateMewUI(){const label=el.mewButton?.querySelector('span'),sub=el.me
 function updateUI(){
  checkAchievements();
  const rank=RANKS[game.currentRank]||RANKS[0],score=Math.round(getLooksScore()),income=getPassiveIncome();
- el.coins.textContent=formatNumber(game.coins);el.incomePerSecond.textContent=formatNumber(income);el.clickPower.textContent='x'+formatNumber(game.clickPower);el.clickPowerSummary.textContent='x'+formatNumber(game.clickPower);el.clickPowerSmall.textContent=formatNumber(game.clickPower);el.looksHeader.textContent=String(score);el.rankPill.textContent=rank.name;el.rankName.textContent=rank.name;el.rankDescription.textContent=rank.description;el.totalClicks.textContent=formatNumber(game.totalClicks);el.cps.textContent=formatNumber(income);el.looksScoreValue.textContent=String(score);el.looksRatingValue.textContent=getLooksRatingName(score);el.autoLevel.textContent='УР. '+game.autoClickers;el.autoIncomePreview.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));const autoLevelModal=document.getElementById('autoLevelModal');const autoIncomePreviewModal=document.getElementById('autoIncomePreviewModal');const clickPowerSmallModal=document.getElementById('clickPowerSmallModal');if(autoLevelModal)autoLevelModal.textContent='УР. '+game.autoClickers;if(autoIncomePreviewModal)autoIncomePreviewModal.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));if(clickPowerSmallModal)clickPowerSmallModal.textContent=formatNumber(game.clickPower);el.autoClickPrice.textContent=formatNumber(game.autoClickPrice);el.clickPowerPrice.textContent=formatNumber(game.clickPowerPrice);el.autoClickButton.title='Автокликер • ур. '+game.autoClickers;el.clickPowerButton.title='Сила клика • x'+game.clickPower;el.autoClickButton.disabled=isUpgradeMaxed('auto',0)||game.coins<game.autoClickPrice;el.clickPowerButton.disabled=isUpgradeMaxed('click',0)||game.coins<game.clickPowerPrice;const boostPrice=getBoostPrice();const boostPriceModal=document.getElementById('boostPriceModal');if(boostPriceModal)boostPriceModal.textContent=formatNumber(boostPrice);const boostPriceMain=document.getElementById('boostPriceMain');if(boostPriceMain)boostPriceMain.textContent=formatNumber(boostPrice);document.getElementById('boostInlineStatus')?.toggleAttribute('hidden',!game.boostActive);const boostInlineTimer=document.getElementById('boostInlineTimer');if(boostInlineTimer)boostInlineTimer.textContent=Math.ceil(game.boostTime);el.metaLooksValue.textContent=String(score);el.bestComboPreview.textContent='x'+formatNumber(game.bestCombo);el.playTimePreview.textContent=formatTime(game.playSeconds);updateUpgradeShop();
+ el.coins.textContent=formatNumber(game.coins);el.incomePerSecond.textContent=formatNumber(income);el.clickPower.textContent='x'+formatNumber(game.clickPower);el.clickPowerSummary.textContent='x'+formatNumber(game.clickPower);el.clickPowerSmall.textContent=formatNumber(game.clickPower);el.looksHeader.textContent=String(score);el.rankPill.textContent=rank.name;el.rankName.textContent=rank.name;el.rankDescription.textContent=rank.description;el.totalClicks.textContent=formatNumber(game.totalClicks);el.cps.textContent=formatNumber(income);el.looksScoreValue.textContent=String(score);el.looksRatingValue.textContent=getLooksRatingName(score);el.autoLevel.textContent='УР. '+game.autoClickers;el.autoIncomePreview.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));const autoLevelModal=document.getElementById('autoLevelModal');const autoIncomePreviewModal=document.getElementById('autoIncomePreviewModal');const clickPowerSmallModal=document.getElementById('clickPowerSmallModal');if(autoLevelModal)autoLevelModal.textContent='УР. '+game.autoClickers;if(autoIncomePreviewModal)autoIncomePreviewModal.textContent=formatNumber(Math.max(1,getPassiveMultiplier()));if(clickPowerSmallModal)clickPowerSmallModal.textContent=formatNumber(game.clickPower);el.autoClickPrice.textContent=formatNumber(game.autoClickPrice);el.clickPowerPrice.textContent=formatNumber(game.clickPowerPrice);el.autoClickButton.title='Автокликер • ур. '+game.autoClickers;el.clickPowerButton.title='Сила клика • x'+game.clickPower;el.autoClickButton.disabled=isUpgradeMaxed('auto',0)||game.coins<game.autoClickPrice;el.clickPowerButton.disabled=isUpgradeMaxed('click',0)||game.coins<game.clickPowerPrice;const boostPrice=getBoostPrice();const boostPriceModal=document.getElementById('boostPriceModal');if(boostPriceModal)boostPriceModal.textContent=formatNumber(boostPrice);const boostPriceMain=document.getElementById('boostPriceMain');if(boostPriceMain)boostPriceMain.textContent=formatNumber(boostPrice);document.getElementById('boostInlineStatus')?.toggleAttribute('hidden',!game.boostActive);const boostInlineTimer=document.getElementById('boostInlineTimer');if(boostInlineTimer)boostInlineTimer.textContent=Math.ceil(game.boostTime);el.metaLooksValue.textContent=String(score);el.bestComboPreview.textContent='x'+formatNumber(game.bestCombo);el.playTimePreview.textContent=formatTime(game.playSeconds);updateUpgradeShop();updateShopGrids();el.characterFrame?.classList.toggle('shop-glow',Boolean(game.shopGlowOwned));
  if(game.boostActive){
   el.boostButton.disabled=true;
   el.boostButton.textContent='x2 АКТИВЕН';
@@ -2073,6 +2211,9 @@ function runEntryChecks(){
 
 document.querySelectorAll('.stat-category').forEach(btn=>btn.addEventListener('click',()=>{activeStatCategory=btn.dataset.category||'face';renderStatCards();}));
 buildUpgradeShop();
+buildShopGrids();
+YSDK_INIT.then(sdk=>{initYandexPayments(sdk)});
+document.addEventListener('click',event=>{const shopBtn=event.target.closest('[data-shop-key]');if(shopBtn)buyShopItem(shopBtn.dataset.shopKey)});
 const upgradeScroll=document.getElementById('upgradeShopList');
 if(upgradeScroll){ upgradeScroll.addEventListener('wheel',e=>{ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ e.stopPropagation(); }},{passive:true}); }
 el.characterButton.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '||event.key==='Spacebar'){event.preventDefault()}}); // отключаем встроенную эмуляцию клика браузером по Enter/Space — иначе зажатая клавиша (автоповтор ОС) кликает персонажа со скоростью света
@@ -3574,6 +3715,19 @@ window.addEventListener('pagehide',()=>{try{window.stopCharacterMusic&&window.st
 .store-desc{margin-top:6px;font-size:10px;color:var(--ink-soft);font-weight:600;min-height:30px}
 .store-button{width:100%;margin-top:14px;padding:11px;border-radius:11px;border:1px solid var(--line-strong);background:#242430;color:var(--ink-soft);font-size:11px;font-weight:800}
 .shop-back{margin:0;padding:10px 14px}
+.store-level{margin-top:8px;font-size:10px;font-weight:800;letter-spacing:.4px;color:var(--ink-soft)}
+.store-card.store-accent-purple .store-icon{color:var(--purple)}
+.store-card.store-accent-gold .store-icon{color:var(--gold)}
+.store-card.store-accent-green .store-icon{color:var(--green)}
+.store-card.store-accent-blue .store-icon{color:var(--blue)}
+.store-card.is-owned{opacity:.82}
+.store-button.can-buy{background:var(--green)!important;border-color:var(--green-dark)!important;color:#0d3b23!important;opacity:1!important}
+.store-button.can-buy:hover{filter:brightness(1.08)}
+.store-button.is-owned-btn{background:linear-gradient(135deg,var(--purple),var(--pink))!important;color:#241a4a!important;opacity:1!important}
+.store-button.store-unavailable{font-size:9.5px;letter-spacing:.2px}
+.store-price-note{margin-top:6px;font-size:9px;color:var(--ink-soft);font-weight:600;opacity:.75}
+.character-frame.shop-glow{box-shadow:0 0 0 3px var(--purple),0 0 34px 6px rgba(154,134,255,.55)!important}
+@media(max-width:760px){.store-level{grid-column:2}.store-button.store-unavailable{font-size:9px}}
 @media(max-width:760px){.menu-panel-minimal,.shop-panel{min-height:calc(100dvh - 20px);padding:18px}.minimal-top{margin-bottom:24px}.minimal-top .menu-logo{font-size:44px}.minimal-hero{margin-bottom:24px}.minimal-hero .menu-title{font-size:34px}.minimal-actions .menu-button{min-height:58px;font-size:14px}.shop-grid{grid-template-columns:1fr;gap:10px;margin-top:20px}.store-card{display:grid;grid-template-columns:48px 1fr;grid-template-rows:auto auto auto;column-gap:12px;text-align:left;padding:14px}.store-icon{grid-row:1 / span 3;align-self:center;text-align:center}.store-button{grid-column:2;margin-top:8px}}
 </style>
 
@@ -3646,19 +3800,40 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .btn-ico-sm{width:14px;height:14px;flex-shrink:0;display:inline-block;vertical-align:-2px}
 .store-icon svg{width:26px;height:26px}
 
-/* Иконка-кнопки в шапке (звук/настройки/магазин) — аккуратные круглые стеклянные кнопки */
+/* Иконка-кнопки в шапке (звук/меню) — аккуратные круглые стеклянные кнопки, увеличенные */
 .mini-action{
-  width:44px;height:44px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;
-  border-radius:13px!important;
+  width:54px;height:54px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:15px!important;
   background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03))!important;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),0 3px 10px rgba(0,0,0,.35)!important;
   color:var(--ink)!important;transition:transform .1s ease,box-shadow .12s ease,background .12s ease;
 }
-.mini-action svg{width:19px;height:19px}
+.mini-action svg{width:24px;height:24px}
 .mini-action:hover{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05))!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 4px 14px rgba(0,0,0,.4)!important;transform:translateY(-1px)}
 .mini-action:active{transform:translateY(1px) scale(.96);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 2px 6px rgba(0,0,0,.3)!important}
 .mini-action.sound-button.muted{color:var(--ink-soft)!important;opacity:.7}
-@media(max-width:620px){.mini-action{width:40px;height:40px}}
+@media(max-width:620px){.mini-action{width:48px;height:48px}.mini-action svg{width:21px;height:21px}}
+
+/* Отдельная видимая кнопка ПЕРЕРОДИТЬСЯ рядом с рангом персонажа */
+.rebirth-standalone-button{
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer;
+  padding:12px 16px;border-radius:13px;border:1px solid var(--purple-dark)!important;
+  background:linear-gradient(135deg,var(--purple),var(--purple-dark))!important;
+  color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.3px;
+  box-shadow:0 2px 15px rgba(0,0,0,.4),0 0 0 1px rgba(154,134,255,.25) inset;
+  transition:transform .1s ease,box-shadow .12s ease,filter .12s ease;
+}
+.rebirth-standalone-button svg{width:18px;height:18px;flex-shrink:0}
+.rebirth-standalone-button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.rebirth-standalone-button:active{transform:translateY(1px) scale(.97)}
+.rebirth-standalone-button.ready{animation:rebirthReadyPulse 1.6s ease-in-out infinite}
+@keyframes rebirthReadyPulse{
+  0%,100%{box-shadow:0 2px 15px rgba(0,0,0,.4),0 0 0 0 rgba(154,134,255,.55)}
+  50%{box-shadow:0 2px 15px rgba(0,0,0,.4),0 0 0 7px rgba(154,134,255,0)}
+}
+@media(prefers-reduced-motion:reduce){.rebirth-standalone-button.ready{animation:none}}
+@media(max-width:620px){.rebirth-standalone-button{padding:10px 12px;font-size:11px}.rebirth-standalone-button svg{width:16px;height:16px}}
+@media(max-width:420px){.rebirth-standalone-button span{display:none}.rebirth-standalone-button{padding:11px}}
 
 /* Кнопки с текстом: quick-button / footer-button / menu-button / settings-toggle / store-button / close-button / select-back */
 .quick-button,.footer-button,.menu-button,.settings-toggle,.store-button,.close-button,.select-back{
@@ -3734,7 +3909,6 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
   .coin-box{justify-self:center;padding:9px 14px;font-size:17px}
   .top-actions{justify-self:end;gap:5px}
   .top-actions .playtime-top{display:none}
-  .top-actions .game-menu-button{display:inline-flex}
 }
 @media(max-width:760px){
   .topbar{position:relative;z-index:315;margin-bottom:8px}
@@ -3750,4 +3924,307 @@ body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;bac
   .game-menu-button{width:40px;height:40px}
 }
 </style>
+
+<style id="rebirth-leaderboard-style">
+/* ==================== ПЕРЕРОЖДЕНИЕ / ЛИДЕРЫ: стили ==================== */
+.rebirth-badge{display:none!important}
+.looks-badge.rebirth-badge{
+  background:linear-gradient(135deg,var(--purple),var(--purple-dark));border-color:var(--purple-dark);
+  color:#fff;display:inline-flex!important;align-items:center;gap:6px;white-space:nowrap
+}
+.rebirth-panel{display:grid;gap:14px}
+.rebirth-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rebirth-stat-card{background:var(--card-soft);border:1px solid var(--line-strong);border-radius:12px;padding:12px 10px;text-align:center}
+.rebirth-stat-label{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--ink-soft)}
+.rebirth-stat-value{font-size:19px;font-weight:800;color:var(--ink);margin-top:4px}
+.rebirth-progress-block{background:var(--card-soft);border:1px solid var(--line-strong);border-radius:12px;padding:12px}
+.rebirth-progress-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:var(--ink-soft)}
+.rebirth-progress-row strong{color:var(--ink);font-size:12px}
+.rebirth-progress-track{height:10px;border-radius:999px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden}
+.rebirth-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--pink));width:0%;transition:width .25s ease}
+.rebirth-progress-text{margin-top:6px;font-size:10px;font-weight:700;color:var(--ink-soft);text-align:right}
+.rebirth-gain{font-size:12px;font-weight:700;color:var(--ink);background:rgba(154,134,255,.12);border:1px solid rgba(154,134,255,.35);border-radius:12px;padding:10px 12px;text-align:center}
+.rebirth-confirm{width:100%;min-height:52px}
+.rebirth-confirm:disabled{opacity:.5;cursor:not-allowed;filter:grayscale(.3)}
+.rebirth-note{font-size:10px;color:var(--ink-soft);font-weight:600;text-align:center;line-height:1.5}
+
+.leaderboard-panel{display:grid;gap:8px}
+.leaderboard-status{font-size:12px;font-weight:700;color:var(--ink-soft);text-align:center;padding:18px 8px}
+.leaderboard-list{display:grid;gap:6px}
+.leaderboard-row{display:grid;grid-template-columns:34px 30px 1fr auto;align-items:center;gap:10px;padding:9px 11px;background:var(--card-soft);border:1px solid var(--line-strong);border-radius:12px}
+.leaderboard-row.self{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple) inset}
+.leaderboard-rank{font-size:11px;font-weight:800;color:var(--ink-soft)}
+.leaderboard-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;background:#1c1c26}
+.leaderboard-avatar-placeholder{border:1px solid var(--line-strong)}
+.leaderboard-name{font-size:12px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.leaderboard-score{font-size:12px;font-weight:800;color:var(--gold-dark)}
+@media(max-width:420px){.rebirth-stats-grid{gap:6px}.rebirth-stat-value{font-size:16px}}
+</style>
+
+<!-- ============================================================================
+     ПЕРЕРОЖДЕНИЕ (PRESTIGE) — надстройка поверх основной игры.
+     Ничего не удаляет и не переписывает: добавляет новые поля в game
+     (с безопасными значениями по умолчанию для старых сейвов) и
+     переопределяет getStatsMultiplier — единственную точку, от которой
+     зависят и сила клика, и пассивный доход, и цена буста. Если этот
+     блок убрать, игра продолжит работать без перерождений.
+     ============================================================================ -->
+<script>
+'use strict';
+(function(){
+
+const SHARD_INCOME_BONUS=0.02;     // +2% дохода (навсегда) за каждый осколок перерождения
+const REBIRTH_EARN_DIVISOR=20000;  // "стоимость" одного осколка в заработанных за забег монетах
+const REBIRTH_MIN_EARNED=20000;    // минимальный заработок за забег, чтобы открыть перерождение
+
+/* ---------- безопасное состояние в сейве (backward-compatible) ---------- */
+function ensurePrestigeState(){
+  if(typeof game==='undefined'||!game)return;
+  if(typeof game.prestigeLevel!=='number'||!isFinite(game.prestigeLevel))game.prestigeLevel=0;
+  if(typeof game.prestigeShards!=='number'||!isFinite(game.prestigeShards))game.prestigeShards=0;
+  if(typeof game.prestigeBaseline!=='number'||!isFinite(game.prestigeBaseline))game.prestigeBaseline=0;
+  game.prestigeLevel=Math.max(0,Math.floor(game.prestigeLevel));
+  game.prestigeShards=Math.max(0,Math.floor(game.prestigeShards));
+  game.prestigeBaseline=Math.max(0,Math.min(game.prestigeBaseline,game.totalEarned||0)||0);
+}
+ensurePrestigeState();
+
+function getPrestigeMultiplier(){ensurePrestigeState();return 1+game.prestigeShards*SHARD_INCOME_BONUS}
+function getRunEarned(){ensurePrestigeState();return Math.max(0,(game.totalEarned||0)-game.prestigeBaseline)}
+function getRebirthShardGain(){return Math.floor(Math.sqrt(getRunEarned()/REBIRTH_EARN_DIVISOR))}
+function canRebirth(){return getRunEarned()>=REBIRTH_MIN_EARNED&&getRebirthShardGain()>=1}
+function shardWord(n){const m10=n%10,m100=n%100;if(m100>=11&&m100<=14)return'осколков';if(m10===1)return'осколок';if(m10>=2&&m10<=4)return'осколка';return'осколков'}
+
+/* ---------- единая точка применения бонуса ----------
+   getStatsMultiplier используется внутри игры и для силы клика, и для
+   пассивного дохода (через getPassiveMultiplier), и для цены буста —
+   переопределяем её один раз, дальше бонус учитывается везде сам. */
+const origGetStatsMultiplier=window.getStatsMultiplier;
+if(typeof origGetStatsMultiplier==='function'){
+  window.getStatsMultiplier=function(){return origGetStatsMultiplier.apply(this,arguments)*getPrestigeMultiplier()};
+}
+
+/* ---------- сам ритуал перерождения ---------- */
+function performRebirth(){
+  if(typeof game==='undefined'||!game)return false;
+  ensurePrestigeState();
+  if(!canRebirth())return false;
+  const gain=getRebirthShardGain();
+  game.prestigeShards+=gain;
+  game.prestigeLevel+=1;
+  game.prestigeBaseline=game.totalEarned;
+  // Сброс только прогресса текущего забега.
+  game.coins=0;
+  game.clickPower=1;
+  game.autoClickers=0;
+  game.boostActive=false;game.boostTime=0;
+  game.comboCount=0;
+  game.mewActive=false;game.mewTime=0;game.mewCooldown=0;game.mewClicks=0;
+  game.currentRank=0;game.rankXP=0;
+  game.characterStats={...DEFAULT_GAME.characterStats};
+  game.upgradePackages={click:{},auto:{}};
+  game.autoClickPrice=packageCost('auto',0);
+  game.clickPowerPrice=packageCost('click',0);
+  if(typeof lastImageSrc!=='undefined')lastImageSrc='';
+  if(typeof lastFrameStage!=='undefined')lastFrameStage='';
+  if(typeof comboLastClick!=='undefined')comboLastClick=0;
+  updateUI();
+  saveGame();
+  celebrateRebirth();
+  showToast('Перерождение №'+game.prestigeLevel+' • +'+gain+' '+shardWord(gain)+' • бонус x'+getPrestigeMultiplier().toFixed(2));
+  renderRebirthPanel();
+  return true;
+}
+function celebrateRebirth(){
+  try{
+    const J=window.__looksmaxJuice;
+    const f=document.getElementById('characterFrame');
+    if(J&&f){
+      const r=f.getBoundingClientRect();
+      J.burst&&J.burst(r.width/2,r.height*.45,22,{color:'#9a86ff',dist:130,kind:'coin',size:14,dur:900});
+      J.burst&&J.burst(r.width/2,r.height*.45,10,{color:'#fff',dist:90,kind:'spark',size:6,dur:700});
+      J.flash&&J.flash('rgba(154,134,255,.55)');
+      J.shakeScreen&&J.shakeScreen(6);
+    }
+    if(navigator.vibrate)navigator.vibrate([20,40,20,40,30]);
+    if(typeof window.playRankSound==='function')window.playRankSound();
+  }catch(_){}
+}
+
+/* ---------- UI: модалка перерождения ---------- */
+const rebirthModal=document.getElementById('rebirthModal');
+function renderRebirthPanel(){
+  if(typeof game==='undefined'||!game||!rebirthModal)return;
+  ensurePrestigeState();
+  const runEarned=getRunEarned(),gain=getRebirthShardGain(),ready=canRebirth();
+  const set=(id,text)=>{const n=document.getElementById(id);if(n)n.textContent=text};
+  set('rebirthShards',formatNumber(game.prestigeShards));
+  set('rebirthLevel',formatNumber(game.prestigeLevel));
+  set('rebirthBonus','+'+Math.round((getPrestigeMultiplier()-1)*100)+'%');
+  set('rebirthRunEarned',formatNumber(runEarned));
+  const pct=Math.max(0,Math.min(100,runEarned/REBIRTH_MIN_EARNED*100));
+  const fill=document.getElementById('rebirthProgressFill');if(fill)fill.style.width=(ready?100:pct)+'%';
+  set('rebirthProgressText',formatNumber(Math.min(runEarned,REBIRTH_MIN_EARNED))+' / '+formatNumber(REBIRTH_MIN_EARNED));
+  const nextMult=(1+(game.prestigeShards+Math.max(1,gain))*SHARD_INCOME_BONUS).toFixed(2);
+  set('rebirthGainText',ready
+    ?('Переродись сейчас: +'+gain+' '+shardWord(gain)+' • бонус станет x'+nextMult)
+    :('Нужно ещё '+formatNumber(Math.max(0,REBIRTH_MIN_EARNED-runEarned))+' монет заработать в этом забеге'));
+  const btn=document.getElementById('rebirthConfirmButton');if(btn)btn.disabled=!ready;
+}
+document.getElementById('rebirthClose')?.addEventListener('click',()=>closeModal(rebirthModal));
+rebirthModal?.addEventListener('click',event=>{if(event.target===rebirthModal)closeModal(rebirthModal)});
+document.getElementById('rebirthConfirmButton')?.addEventListener('click',()=>{
+  if(!canRebirth())return;
+  const gain=getRebirthShardGain();
+  const ok=window.confirm('Переродиться? Монеты, ранг, сила клика, автокликер и характеристики обнулятся. Взамен ты навсегда получишь +'+gain+' '+shardWord(gain)+' (доход +'+Math.round(gain*SHARD_INCOME_BONUS*100)+'%). Достижения и статистика сохранятся.');
+  if(!ok)return;
+  performRebirth();
+});
+function openRebirthModal(){renderRebirthPanel();openModal(rebirthModal)}
+document.getElementById('settingsRebirthButton')?.addEventListener('click',openRebirthModal);
+document.getElementById('topRebirthButton')?.addEventListener('click',openRebirthModal);
+
+/* ---------- отдельная кнопка ПЕРЕРОДИТЬСЯ рядом с рангом ---------- */
+function updateRebirthBadge(){
+  const btn=document.getElementById('topRebirthButton');
+  const label=document.getElementById('topRebirthButtonLabel');
+  if(!label||typeof game==='undefined'||!game)return;
+  if(game.prestigeShards>0){
+    label.textContent='ПЕРЕРОДИТЬСЯ · x'+getPrestigeMultiplier().toFixed(2);
+  }else{
+    label.textContent='ПЕРЕРОДИТЬСЯ';
+  }
+  if(btn)btn.classList.toggle('ready',typeof canRebirth==='function'&&canRebirth());
+}
+const origUpdateUIForRebirth=window.updateUI;
+if(typeof origUpdateUIForRebirth==='function'){
+  window.updateUI=function(){
+    const r=origUpdateUIForRebirth.apply(this,arguments);
+    updateRebirthBadge();
+    if(rebirthModal&&rebirthModal.classList.contains('show'))renderRebirthPanel();
+    return r;
+  };
+}
+const origPerformResetForRebirth=window.performReset;
+if(typeof origPerformResetForRebirth==='function'){
+  window.performReset=function(){const r=origPerformResetForRebirth.apply(this,arguments);ensurePrestigeState();updateRebirthBadge();return r};
+}
+updateRebirthBadge();
+
+window.__looksmaxPrestige={getPrestigeMultiplier,getRunEarned,getRebirthShardGain,canRebirth,performRebirth,renderRebirthPanel};
+})();
+</script>
+
+<!-- ============================================================================
+     ЛИДЕРБОРД — интеграция с Яндекс Игры SDK. Работает только внутри
+     Яндекс Игр у авторизованного игрока; вне площадки модалка просто
+     покажет сообщение, ничего не ломая.
+
+     ВАЖНО ПЕРЕД ПУБЛИКАЦИЕЙ: в консоли разработчика Яндекс Игр нужно
+     заранее создать лидерборд с техническим именем, указанным ниже в
+     LEADERBOARD_NAME ("totalEarned"), тип очков — целочисленный,
+     сортировка — по убыванию. Без этого шага запросы к лидерборду
+     будут возвращать ошибку, даже если сама игра открыта на Яндекс Играх.
+     ============================================================================ -->
+<script>
+'use strict';
+(function(){
+
+const LEADERBOARD_NAME='totalEarned';
+const SUBMIT_INTERVAL_MS=45000;
+let lbApi=null,lbPlayer=null,lbAuthorized=false,lastSubmit=0;
+
+async function ensureLeaderboardApi(){
+  if(lbApi)return lbApi;
+  if(!ysdk||!ysdk.getLeaderboards)return null;
+  try{lbApi=await ysdk.getLeaderboards()}catch(_){lbApi=null}
+  return lbApi;
+}
+async function ensureLeaderboardPlayer(){
+  if(lbPlayer)return lbPlayer;
+  if(!ysdk||!ysdk.getPlayer)return null;
+  try{
+    lbPlayer=await ysdk.getPlayer({scopes:false});
+    lbAuthorized=!!(lbPlayer&&typeof lbPlayer.isAuthorized==='function'&&lbPlayer.isAuthorized());
+  }catch(_){lbPlayer=null;lbAuthorized=false}
+  return lbPlayer;
+}
+async function submitScore(force){
+  const now=Date.now();
+  if(!force&&now-lastSubmit<SUBMIT_INTERVAL_MS)return;
+  if(typeof game==='undefined'||!game)return;
+  const api=await ensureLeaderboardApi();if(!api)return;
+  await ensureLeaderboardPlayer();if(!lbAuthorized)return;
+  const score=Math.max(0,Math.floor(game.totalEarned||0));
+  try{await api.setLeaderboardScore(LEADERBOARD_NAME,score);lastSubmit=now}
+  catch(err){console.warn('Leaderboard submit failed (проверь, что лидерборд '+LEADERBOARD_NAME+' создан в консоли Яндекс Игр):',err)}
+}
+if(typeof YSDK_INIT!=='undefined'&&YSDK_INIT&&YSDK_INIT.then){
+  YSDK_INIT.then(()=>{if(ysdk)setTimeout(()=>submitScore(true),1500)});
+}
+setInterval(()=>submitScore(false),SUBMIT_INTERVAL_MS);
+const origShowRankUpForLB=window.showRankUp;
+if(typeof origShowRankUpForLB==='function'){
+  window.showRankUp=function(){const r=origShowRankUpForLB.apply(this,arguments);submitScore(true);return r};
+}
+
+/* ---------- UI ---------- */
+const modal=document.getElementById('leaderboardModal');
+const statusEl=document.getElementById('leaderboardStatus');
+const listEl=document.getElementById('leaderboardList');
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function playerAvatar(p){try{if(p&&typeof p.getAvatarSrc==='function')return p.getAvatarSrc('small')}catch(_){}return''}
+function playerName(p){return(p&&(p.publicName||p.name))||'Игрок'}
+function playerUid(p){if(!p)return null;if(typeof p.uniqueID==='string')return p.uniqueID;if(typeof p.getUniqueID==='function'){try{return p.getUniqueID()}catch(_){return null}}return null}
+
+function renderRow(entry,isSelf){
+  const player=entry.player||{};
+  const name=escapeHtml(playerName(player));
+  const rank=entry.rank!=null?entry.rank:'—';
+  const score=formatNumber(entry.score||0);
+  const avatar=playerAvatar(player);
+  const img=avatar?'<img class="leaderboard-avatar" src="'+avatar+'" alt="">':'<div class="leaderboard-avatar leaderboard-avatar-placeholder"></div>';
+  return '<div class="leaderboard-row'+(isSelf?' self':'')+'"><div class="leaderboard-rank">#'+rank+'</div>'+img+'<div class="leaderboard-name">'+name+'</div><div class="leaderboard-score">'+score+'</div></div>';
+}
+async function openLeaderboard(){
+  openModal(modal);
+  if(statusEl){statusEl.hidden=false;statusEl.textContent='Загрузка…'}
+  if(listEl)listEl.innerHTML='';
+  if(!ysdk){
+    if(statusEl)statusEl.textContent='Лидерборд доступен только внутри Яндекс Игр.';
+    return;
+  }
+  await submitScore(true);
+  const api=await ensureLeaderboardApi();
+  if(!api){
+    if(statusEl)statusEl.textContent='Лидерборд временно недоступен.';
+    return;
+  }
+  try{
+    const result=await api.getLeaderboardEntries(LEADERBOARD_NAME,{quantityTop:10,includeUser:lbAuthorized,quantityAround:lbAuthorized?3:0});
+    const entries=(result&&result.entries)||[];
+    if(!entries.length){
+      if(statusEl)statusEl.textContent=lbAuthorized?'Пока никто не набрал очков — стань первым!':'Войди через Яндекс ID, чтобы попасть в рейтинг.';
+      return;
+    }
+    if(statusEl)statusEl.hidden=true;
+    const selfId=playerUid(lbPlayer);
+    const html=entries.map(e=>renderRow(e,!!(selfId&&e&&playerUid(e.player)===selfId))).join('');
+    if(listEl)listEl.innerHTML=html;
+  }catch(err){
+    console.warn('Leaderboard load failed (проверь, что лидерборд '+LEADERBOARD_NAME+' создан в консоли Яндекс Игр):',err);
+    if(statusEl)statusEl.textContent='Не удалось загрузить рейтинг.';
+  }
+}
+document.getElementById('leaderboardClose')?.addEventListener('click',()=>closeModal(modal));
+modal?.addEventListener('click',event=>{if(event.target===modal)closeModal(modal)});
+document.getElementById('gameMenuLeaderboard')?.addEventListener('click',()=>{setGameMenu(false);openLeaderboard()});
+document.getElementById('settingsLeaderboardButton')?.addEventListener('click',openLeaderboard);
+
+window.addEventListener('keydown',event=>{if(event.key==='Escape'){const rb=document.getElementById('rebirthModal');if(rb&&rb.classList.contains('show'))closeModal(rb);if(modal&&modal.classList.contains('show'))closeModal(modal)}});
+
+window.__looksmaxLeaderboard={submitScore,openLeaderboard};
+})();
+</script>
 </body></html>
