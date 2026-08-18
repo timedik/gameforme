@@ -1,7 +1,17 @@
 <!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#15151f"><title>Улучши Внешность</title>
 <!-- Yandex Games SDK: если игра открыта не на Яндекс Играх, скрипт просто не подключится и весь код ниже уйдёт в безопасный fallback -->
 <script src="https://yandex.ru/games/sdk/v2"></script>
-<style>@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+<style>
+/* Шрифт Manrope подключается локально (self-hosted), без внешних запросов —
+   это принципиально для Яндекс Игр: песочница не гарантирует доступ к сторонним
+   доменам (кроме самого SDK), плюс модерация может попросить убрать внешние сети.
+   Файлы нужно положить в папку fonts/ рядом с index.html — см. инструкцию в чате.
+   Если файлов не будет — ничего не сломается: браузер тихо откатится на системный
+   шрифт из списка ниже (тот же graceful fallback, что и у картинок/аудио в игре). */
+@font-face{font-family:'Manrope';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Manrope-Medium.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Manrope-SemiBold.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Manrope-Bold.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Manrope-ExtraBold.woff2') format('woff2')}
 :root{
   --bg-a:#17171f;
   --card:#1e1e29;
@@ -1452,6 +1462,7 @@ body{
     </div>
     <div class="game-menu-actions">
       <button class="game-menu-action primary" id="gameMenuContinue" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5L8 5.5z"/></svg><span>ПРОДОЛЖИТЬ ИГРУ</span></button>
+      <button class="game-menu-action" id="gameMenuCharacter" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 12v-2a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 12v2a4 4 0 01-4 4H3"/></svg><span>СМЕНИТЬ ПЕРСОНАЖА</span></button>
       <button class="game-menu-action" id="gameMenuShop" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V7a6 6 0 0112 0v2"/><path d="M4.5 9h15l-1.2 11.2a2 2 0 01-2 1.8H7.7a2 2 0 01-2-1.8L4.5 9z"/></svg><span>МАГАЗИН</span></button>
       <button class="game-menu-action" id="gameMenuLeaderboard" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M7 6H4a3 3 0 003 3"/><path d="M17 6h3a3 3 0 01-3 3"/></svg><span>ЛИДЕРЫ</span></button>
       <button class="game-menu-action" id="gameMenuSettings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 117.04 4.3l.06.06A1.65 1.65 0 008.92 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33 1.65 1.65 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 01-1.51 1z"/></svg><span>НАСТРОЙКИ</span></button>
@@ -2350,6 +2361,7 @@ function openGameSubMenu(which){
   setGameMenu(false);
   if(which==='shop'){menuUI.shop.classList.remove('hidden');panelMidGame=true;}
   if(which==='settings'){openSettings(true);}
+  if(which==='character'){openCharacterMenu(true);}
 }
 gameMenuButton?.addEventListener('click',()=>setGameMenu(!gameMenuPanel?.classList.contains('show')));
 mtMenuButton?.addEventListener('click',()=>setGameMenu(true));
@@ -2357,6 +2369,7 @@ document.getElementById('gameMenuClose')?.addEventListener('click',()=>setGameMe
 gameMenuBackdrop?.addEventListener('click',()=>setGameMenu(false));
 document.getElementById('gameMenuContinue')?.addEventListener('click',()=>setGameMenu(false));
 document.getElementById('gameMenuShop')?.addEventListener('click',()=>openGameSubMenu('shop'));
+document.getElementById('gameMenuCharacter')?.addEventListener('click',()=>openGameSubMenu('character'));
 document.getElementById('gameMenuSettings')?.addEventListener('click',()=>openGameSubMenu('settings'));
 document.getElementById('gameMenuBackMain')?.addEventListener('click',()=>{setGameMenu(false);backToMain();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&gameMenuPanel?.classList.contains('show'))setGameMenu(false);});
